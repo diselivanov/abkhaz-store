@@ -1,36 +1,38 @@
 import Link from 'next/link'
 import type { Post, Category } from '@/payload-types'
-import { Pagination } from '../Pagination'
-import { PostCard } from '../PostCard'
 import { SearchInput } from '../SearchInput'
+import { InfinitePosts } from '../InfinitePosts'
 import styles from './index.module.css'
 
 type Props = {
   posts: Post[]
   categories: Category[]
-  currentPage: number
-  totalPages: number
+  hasMore: boolean
   query?: string
   activeCategorySlug?: string
   heading: string
-  buildHref: (page: number) => string
   searchAction: string
   hiddenCategory?: string
   filters?: React.ReactNode
+  apiFilters?: {
+    gorod?: string
+    tip?: string
+    besplatno?: string
+    rekomenduem?: string
+  }
 }
 
 export function BlogIndex({
   posts,
   categories,
-  currentPage,
-  totalPages,
+  hasMore,
   query,
   activeCategorySlug,
   heading,
-  buildHref,
   searchAction,
   hiddenCategory,
   filters,
+  apiFilters,
 }: Props) {
   return (
     <div className={styles.wrapper}>
@@ -73,14 +75,14 @@ export function BlogIndex({
             {query ? `Ничего не найдено по запросу «${query}»` : 'Пока нет статей'}
           </p>
         ) : (
-          <div className={styles.grid}>
-            {posts.map((post, i) => (
-              <PostCard key={post.id} post={post} priority={i < 3} />
-            ))}
-          </div>
+          <InfinitePosts
+            initialPosts={posts}
+            initialHasMore={hasMore}
+            categorySlug={activeCategorySlug}
+            q={query}
+            filters={apiFilters}
+          />
         )}
-
-        <Pagination currentPage={currentPage} totalPages={totalPages} buildHref={buildHref} />
       </main>
     </div>
   )

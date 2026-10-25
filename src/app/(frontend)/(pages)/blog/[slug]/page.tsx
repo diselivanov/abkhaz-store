@@ -187,20 +187,20 @@ export default async function PostPage({ params }: Props) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `/blog/${post.slug}`,
+      '@id': `${serverUrl}/blog/${post.slug}`,
     },
     breadcrumb: {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Главная', item: '/' },
-        { '@type': 'ListItem', position: 2, name: 'Блог', item: '/blog' },
+        { '@type': 'ListItem', position: 1, name: 'Главная', item: `${serverUrl}/` },
+        { '@type': 'ListItem', position: 2, name: 'Блог', item: `${serverUrl}/blog` },
         ...(categories.length > 0
           ? [
               {
                 '@type': 'ListItem',
                 position: 3,
                 name: categories[0].title,
-                item: `/blog/category/${categories[0].slug}`,
+                item: `${serverUrl}/blog/category/${categories[0].slug}`,
               },
             ]
           : []),
@@ -208,7 +208,7 @@ export default async function PostPage({ params }: Props) {
           '@type': 'ListItem',
           position: categories.length > 0 ? 4 : 3,
           name: post.title,
-          item: `/blog/${post.slug}`,
+          item: `${serverUrl}/blog/${post.slug}`,
         },
       ],
     },
@@ -223,7 +223,7 @@ export default async function PostPage({ params }: Props) {
           itemListElement: related.map((p, i) => ({
             '@type': 'ListItem',
             position: i + 1,
-            url: `/blog/${p.slug}`,
+            url: `${serverUrl}/blog/${p.slug}`,
             name: p.title,
           })),
         }

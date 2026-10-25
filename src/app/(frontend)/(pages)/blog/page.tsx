@@ -3,60 +3,48 @@ import config from '@/payload.config'
 import { BlogIndex } from './_components/BlogIndex'
 import { CategoryFilters, type TagGroup } from './_components/CategoryFilters'
 import { JsonLd } from '@/components/JsonLd'
+import { fetchBlogPosts } from '@/lib/fetchBlogPosts'
 import type { Tag } from '@/payload-types'
 
 export const revalidate = 60
 
-const PER_PAGE = 12
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 const FILTER_KEYS = [
   { key: 'gorod', prefix: 'gorod-', label: 'Город' },
   { key: 'tip', prefix: 'tip-', label: 'Тип места' },
   { key: 'besplatno', prefix: 'besplatno', label: 'Бесплатный вход' },
   { key: 'rekomenduem', prefix: 'rekomenduem', label: 'Рекомендуем' },
-  { key: 'sezon', prefix: 'sezon-', label: 'Сезон' },
 ]
 
 type Props = {
   searchParams: Promise<{
-    page?: string
     q?: string
     gorod?: string
     tip?: string
     besplatno?: string
     rekomenduem?: string
-    sezon?: string
   }>
 }
 
-export async function generateMetadata({ searchParams }: Props) {
-  const { q } = await searchParams
-  const query = q?.trim() || ''
-
-  const metadata: any = {
-    title: 'Блог',
-    description: 'Открой для себя Абхазию: города, места, пляжи, маршруты и статьи.',
-    alternates: {
-      canonical: '/blog',
-    },
+export async function generateMetadata() {
+  return {
+    title: 'Блог об Абхазии — города, пляжи, достопримечательности',
+    description:
+      'Гид по Абхазии: обзоры городов, пляжи, исторические места и маршруты. Полезные статьи с фото, картами и советами для путешественников.',
+    alternates: { canonical: '/blog' },
     openGraph: {
-      title: 'Блог',
-      description: 'Открой для себя Абхазию: города, места, пляжи, маршруты и статьи.',
+      title: 'Блог об Абхазии — города, пляжи и достопримечательности',
+      description:
+        'Обзоры городов, пляжей и исторических мест Абхазии. Фото, карты и советы для путешественников.',
       type: 'website',
       url: '/blog',
     },
   }
-
-  if (query) {
-    metadata.robots = { index: false, follow: true }
-  }
-
-  return metadata
 }
 
 export default async function BlogPage({ searchParams }: Props) {
   const sp = await searchParams
-  const page = Math.max(1, Number(sp.page) || 1)
   const query = sp.q?.trim() || ''
 
   const active: Record<string, string | undefined> = {
@@ -64,65 +52,13 @@ export default async function BlogPage({ searchParams }: Props) {
     tip: sp.tip,
     besplatno: sp.besplatno,
     rekomenduem: sp.rekomenduem,
-    sezon: sp.sezon,
   }
+
+  const tagSlugs = Object.values(active).filter((v): v is string => !!v)
+
+  const { posts, hasMore } = await fetchBlogPosts({ page: 1, q: query, tagSlugs })
 
   const payload = await getPayload({ config })
-
-  const where: any = {
-    and: [{ status: { equals: 'published' } }],
-  }
-  if (query) {
-    where.and.push({ title: { contains: query } })
-  }
-
-  const activeSlugs = Object.values(active).filter((v): v is string => !!v)
-  if (activeSlugs.length > 0) {
-    let allowedIds: number[] | null = null
-    let broken = false
-
-    for (const slug of activeSlugs) {
-      const { docs: tagDocs } = await payload.find({
-        collection: 'tags',
-        where: { slug: { equals: slug } },
-        limit: 1,
-      })
-      const tag = tagDocs[0]
-      if (!tag) {
-        broken = true
-        break
-      }
-
-      const baseAnd: any[] = [{ status: { equals: 'published' } }, { tags: { in: [tag.id] } }]
-      if (allowedIds) baseAnd.push({ id: { in: allowedIds } })
-
-      const { docs: postDocs } = await payload.find({
-        collection: 'posts',
-        where: { and: baseAnd },
-        limit: 1000,
-        depth: 0,
-        pagination: false,
-      })
-
-      allowedIds = postDocs.map((p) => p.id)
-      if (allowedIds.length === 0) break
-    }
-
-    where.and.push({ id: { in: broken ? [] : (allowedIds ?? []) } })
-  }
-
-  const {
-    docs: posts,
-    totalPages,
-    page: currentPage,
-  } = await payload.find({
-    collection: 'posts',
-    where,
-    sort: '-publishedAt',
-    limit: PER_PAGE,
-    page,
-    depth: 2,
-  })
 
   const { docs: categories } = await payload.find({
     collection: 'categories',
@@ -142,26 +78,15 @@ export default async function BlogPage({ searchParams }: Props) {
     tags: (allTags as Tag[]).filter((t) => t.slug.startsWith(prefix)),
   }))
 
-  const buildHref = (p: number) => {
-    const params = new URLSearchParams()
-    if (query) params.set('q', query)
-    if (p > 1) params.set('page', String(p))
-    Object.entries(active).forEach(([k, v]) => {
-      if (v) params.set(k, v)
-    })
-    const qs = params.toString()
-    return qs ? `/blog?${qs}` : '/blog'
-  }
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: 'Блог',
-    url: '/blog',
+    url: `${serverUrl}/blog`,
     blogPost: posts.map((post) => ({
       '@type': 'BlogPosting',
       headline: post.title,
-      url: `/blog/${post.slug}`,
+      url: `${serverUrl}/blog/${post.slug}`,
       datePublished: post.publishedAt,
     })),
   }
@@ -171,13 +96,12 @@ export default async function BlogPage({ searchParams }: Props) {
       <BlogIndex
         posts={posts}
         categories={categories}
-        currentPage={currentPage ?? 1}
-        totalPages={totalPages ?? 1}
+        hasMore={hasMore}
         query={query}
         heading="Все категории"
-        buildHref={buildHref}
         searchAction="/blog"
         filters={<CategoryFilters groups={groups} active={active} basePath="/blog" query={query} />}
+        apiFilters={active}
       />
       <JsonLd data={jsonLd} />
     </>

@@ -1,3 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
@@ -10,7 +21,12 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
     group: 'Общее',
   },
-  auth: true,
+  auth: {
+  cookies: {
+    sameSite: 'Lax',
+    secure: false,
+  },
+},
   access: {
     admin: ({ req: { user } }) => user?.role === 'admin',
     create: ({ req: { user } }) => user?.role === 'admin',

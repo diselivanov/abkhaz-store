@@ -150,9 +150,9 @@
   .overlay {
     align-items: stretch;
     padding: 0;
-  }
+ }
 
-  .modal {
+.modal {
     max-width: none;
     height: 100vh;
     height: 100dvh;

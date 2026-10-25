@@ -22,7 +22,7 @@ type Props = {
   query?: string
 }
 
-const ORDER = ['gorod-', 'tip-', 'sezon-', 'besplatno', 'rekomenduem']
+const ORDER = ['gorod-', 'tip-', 'besplatno', 'rekomenduem']
 
 export function sortGroups(groups: TagGroup[]): TagGroup[] {
   return [...groups].sort((a, b) => ORDER.indexOf(a.prefix) - ORDER.indexOf(b.prefix))
