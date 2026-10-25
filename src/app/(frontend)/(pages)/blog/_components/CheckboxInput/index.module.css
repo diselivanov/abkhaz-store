@@ -2,17 +2,16 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
-  width: 100%;
 }
 
 .control {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
-  height: var(--control-h);
-  padding: 0 var(--sp-3);
+  height: var(--control-h-sm);
+  padding: 0 var(--sp-4);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   background: var(--bg);
   color: var(--fg);
   font-size: var(--fs-control);
@@ -21,31 +20,13 @@
   cursor: pointer;
 }
 
-.box {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-full);
-  background: var(--bg);
-  color: var(--btn-fg);
-}
-
-.box > span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.boxChecked {
-  background: var(--black);
-  border-color: var(--black);
-}
-
 .text {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.controlActive {
+  background: var(--blue-10);
+  color: var(--btn);
+  border-color: var(--blue-10);
 }

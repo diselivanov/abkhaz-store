@@ -14,9 +14,7 @@ export async function GET(req: Request) {
   const q = searchParams.get('q')?.trim() || ''
   const categorySlug = searchParams.get('category')?.trim() || ''
 
-  const tagSlugs = FILTER_KEYS.map((k) => searchParams.get(k)).filter(
-    (v): v is string => !!v,
-  )
+  const tagSlugs = FILTER_KEYS.map((k) => searchParams.get(k)).filter((v): v is string => !!v)
 
   let categoryId: number | undefined
   if (categorySlug) {

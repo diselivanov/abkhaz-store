@@ -1,6 +1,7 @@
 .search {
   position: relative;
   width: var(--form-w-sm);
+  user-select: none;
 }
 
 .searchIcon {

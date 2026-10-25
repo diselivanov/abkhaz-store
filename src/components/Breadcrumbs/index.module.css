@@ -1,15 +1,30 @@
 .root {
-  width: 100%;
-  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1);
   font-size: var(--fs-control);
   color: var(--fg-secondary);
+  user-select: none;
 }
 
-.root a {
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.item a {
   color: var(--fg-secondary);
   text-decoration: none;
 }
 
-.root a:hover {
+.item a:hover {
   color: var(--fg);
+}
+
+.sep {
+  flex-shrink: 0;
+  color: var(--fg-secondary);
+  opacity: 0.6;
 }

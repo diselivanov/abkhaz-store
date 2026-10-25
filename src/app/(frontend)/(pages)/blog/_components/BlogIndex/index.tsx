@@ -39,7 +39,6 @@ export function BlogIndex({
       <header className={styles.header}>
         <div className={styles.searchRow}>
           <SearchInput defaultValue={query} action={searchAction} hiddenCategory={hiddenCategory} />
-          {filters}
         </div>
 
         {categories.length > 0 && (
@@ -65,6 +64,8 @@ export function BlogIndex({
             ))}
           </nav>
         )}
+
+        {filters}
       </header>
 
       <main className={styles.content}>

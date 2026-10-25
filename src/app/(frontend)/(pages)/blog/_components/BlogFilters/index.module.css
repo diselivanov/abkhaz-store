@@ -1,0 +1,81 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  user-select: none;
+}
+
+.field {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.selectWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select {
+  width: auto;
+  min-width: 130px;
+  height: var(--control-h-sm);
+  padding: 0 calc(var(--sp-3) + 18px) 0 var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--fs-control);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  user-select: none;
+}
+
+.select:focus,
+.select:focus-visible {
+  outline: none;
+}
+
+.select::-ms-expand {
+  display: none;
+}
+
+.selectIcon {
+  position: absolute;
+  right: var(--sp-3);
+  pointer-events: none;
+  color: var(--fg-secondary);
+}
+
+@media (max-width: 768px) {
+  .root {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: var(--sp-1);
+    padding-bottom: var(--sp-1);
+  }
+
+  .root::-webkit-scrollbar {
+    display: none;
+  }
+
+  .field {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+  }
+
+  .select {
+    width: auto;
+    min-width: 0;
+  }
+}

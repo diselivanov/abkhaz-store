@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { BlogIndex } from './_components/BlogIndex'
-import { CategoryFilters, type TagGroup } from './_components/CategoryFilters'
+import { BlogFilters, type TagGroup } from './_components/BlogFilters'
 import { JsonLd } from '@/components/JsonLd'
 import { fetchBlogPosts } from '@/lib/fetchBlogPosts'
 import type { Tag } from '@/payload-types'
@@ -11,8 +11,8 @@ export const revalidate = 60
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 const FILTER_KEYS = [
-  { key: 'gorod', prefix: 'gorod-', label: 'Город' },
-  { key: 'tip', prefix: 'tip-', label: 'Тип места' },
+  { key: 'gorod', prefix: 'gorod-', label: 'Все города' },
+  { key: 'tip', prefix: 'tip-', label: 'Все места' },
   { key: 'besplatno', prefix: 'besplatno', label: 'Бесплатный вход' },
   { key: 'rekomenduem', prefix: 'rekomenduem', label: 'Рекомендуем' },
 ]
@@ -100,7 +100,7 @@ export default async function BlogPage({ searchParams }: Props) {
         query={query}
         heading="Все категории"
         searchAction="/blog"
-        filters={<CategoryFilters groups={groups} active={active} basePath="/blog" query={query} />}
+        filters={<BlogFilters groups={groups} basePath="/blog" />}
         apiFilters={active}
       />
       <JsonLd data={jsonLd} />

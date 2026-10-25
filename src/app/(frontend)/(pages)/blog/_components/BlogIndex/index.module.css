@@ -39,6 +39,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--sp-2);
+  user-select: none;
 }
 
 .categoryLink {

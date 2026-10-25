@@ -34,17 +34,10 @@ function buildQuery(page: number, categorySlug?: string, q?: string, filters?: F
   return params.toString()
 }
 
-export function InfinitePosts({
-  initialPosts,
-  initialHasMore,
-  categorySlug,
-  q,
-  filters,
-}: Props) {
+export function InfinitePosts({ initialPosts, initialHasMore, categorySlug, q, filters }: Props) {
   const [posts, setPosts] = useState<Post[]>(initialPosts)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(initialHasMore)
-  const [loading, setLoading] = useState(false)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const loadingRef = useRef(false)
 
@@ -57,7 +50,6 @@ export function InfinitePosts({
   const loadMore = useCallback(async () => {
     if (loadingRef.current || !hasMore) return
     loadingRef.current = true
-    setLoading(true)
     try {
       const nextPage = page + 1
       const qs = buildQuery(nextPage, categorySlug, q, filters)
@@ -72,7 +64,6 @@ export function InfinitePosts({
       setHasMore(Boolean(data.hasMore))
     } catch {
     } finally {
-      setLoading(false)
       loadingRef.current = false
     }
   }, [page, hasMore, categorySlug, q, filters])
@@ -100,7 +91,6 @@ export function InfinitePosts({
         ))}
       </div>
       {hasMore && <div ref={sentinelRef} className={styles.sentinel} aria-hidden="true" />}
-      {loading && <div className={styles.loader} aria-hidden="true" />}
     </>
   )
 }

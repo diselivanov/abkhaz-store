@@ -84,7 +84,7 @@ async function getRelatedPosts(post: Post): Promise<Post[]> {
 
   const fallback = docs.filter((p) => !byTagsIds.has(p.id)).sort(() => Math.random() - 0.5)
 
-  const merged = [...byTags, ...fallback].slice(0, 6)
+  const merged = [...byTags, ...fallback].slice(0, 12)
 
   return merged.sort(() => Math.random() - 0.5)
 }
