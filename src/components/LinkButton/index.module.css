@@ -6,6 +6,7 @@
   font-size: var(--fs-control);
   text-decoration: none;
   white-space: nowrap;
+  user-select: none;
 }
 
 .sm {

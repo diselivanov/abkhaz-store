@@ -1,0 +1,41 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  background: var(--overlay);
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--fs-control);
+  color: var(--fg-secondary);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}

@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    avatars: Avatar;
     posts: Post;
     categories: Category;
     tags: Tag;
@@ -81,6 +82,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    avatars: AvatarsSelect<false> | AvatarsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
@@ -130,7 +132,9 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name?: string | null;
+  avatar?: (number | null) | Avatar;
   role: 'admin' | 'user';
+  blockedAt?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -150,6 +154,25 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "avatars".
+ */
+export interface Avatar {
+  id: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -264,6 +287,10 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'avatars';
+        value: number | Avatar;
+      } | null)
+    | ({
         relationTo: 'posts';
         value: number | Post;
       } | null)
@@ -323,7 +350,9 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  avatar?: T;
   role?: T;
+  blockedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -347,6 +376,24 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "avatars_select".
+ */
+export interface AvatarsSelect<T extends boolean = true> {
   alt?: T;
   updatedAt?: T;
   createdAt?: T;

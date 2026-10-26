@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
@@ -20,13 +9,18 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
     group: 'Общее',
+    components: {
+      edit: {
+        beforeDocumentControls: ['@/components/admin/BlockUserButton#BlockUserButton'],
+      },
+    },
   },
   auth: {
-  cookies: {
-    sameSite: 'Lax',
-    secure: false,
+    cookies: {
+      sameSite: 'Lax',
+      secure: false,
+    },
   },
-},
   access: {
     admin: ({ req: { user } }) => user?.role === 'admin',
     create: ({ req: { user } }) => user?.role === 'admin',
@@ -49,6 +43,12 @@ export const Users: CollectionConfig = {
       label: 'Отображаемое имя',
     },
     {
+      name: 'avatar',
+      type: 'upload',
+      relationTo: 'avatars',
+      label: 'Аватар',
+    },
+    {
       name: 'role',
       type: 'select',
       required: true,
@@ -58,6 +58,20 @@ export const Users: CollectionConfig = {
         { label: 'Администратор', value: 'admin' },
         { label: 'Пользователь', value: 'user' },
       ],
+      access: {
+        update: ({ req: { user } }) => user?.role === 'admin',
+      },
+    },
+    {
+      name: 'blockedAt',
+      type: 'date',
+      label: 'Заблокирован',
+      admin: {
+        hidden: true,
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
       access: {
         update: ({ req: { user } }) => user?.role === 'admin',
       },

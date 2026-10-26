@@ -4,6 +4,7 @@ import { Onest } from 'next/font/google'
 import { Layout } from '@/components/Layout'
 import { JsonLd } from '@/components/JsonLd'
 import './styles/globals.css'
+import { AlertProvider } from '@/components/AlertProvider'
 
 const onest = Onest({
   subsets: ['latin', 'cyrillic'],
@@ -80,7 +81,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={onest.variable}>
       <body>
-        <Layout>{children}</Layout>
+        <AlertProvider>
+          <Layout>{children}</Layout>
+        </AlertProvider>
         <JsonLd data={siteLd} />
         <script
           dangerouslySetInnerHTML={{

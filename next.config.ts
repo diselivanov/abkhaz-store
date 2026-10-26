@@ -8,12 +8,8 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   images: {
-    localPatterns: [
-      {
-        pathname: '/api/media/file/**',
-      },
-    ],
-  },  
+    localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/api/avatars/file/**' }],
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

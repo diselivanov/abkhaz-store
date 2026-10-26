@@ -30,6 +30,13 @@
   justify-self: end;
 }
 
+.profile {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  user-select: none;
+}
+
 @media (max-width: 768px) {
   .header {
     display: none;

@@ -1,0 +1,20 @@
+.btn {
+  height: var(--base-height, 32px);
+  padding: 0 12px;
+  border: 1px solid var(--theme-error-500);
+  border-radius: 4px;
+  background: var(--theme-error-500);
+  color: var(--theme-elevation-0);
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--theme-error-600);
+  border-color: var(--theme-error-600);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

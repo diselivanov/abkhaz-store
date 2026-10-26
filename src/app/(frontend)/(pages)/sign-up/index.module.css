@@ -1,0 +1,36 @@
+.wrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-6) var(--sp-3);
+}
+
+.form {
+  width: 100%;
+  max-width: var(--form-w-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.title {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw);
+  text-align: center;
+}
+
+.hint {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-control);
+  color: var(--fg-secondary);
+  text-align: center;
+}
+
+.hint a {
+  color: var(--btn);
+  text-decoration: none;
+}
+
+.hint a:hover {
+  text-decoration: underline;
+}

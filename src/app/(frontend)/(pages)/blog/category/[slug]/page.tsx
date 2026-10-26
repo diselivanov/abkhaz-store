@@ -4,7 +4,7 @@ import config from '@/payload.config'
 import { BlogIndex } from '../../_components/BlogIndex'
 import { BlogFilters, type TagGroup } from '../../_components/BlogFilters'
 import { JsonLd } from '@/components/JsonLd'
-import { fetchBlogPosts } from '@/lib/fetchBlogPosts'
+import { fetchBlogPosts } from '@/lib/blog/fetchBlogPosts'
 import type { Tag } from '@/payload-types'
 
 export const revalidate = 300

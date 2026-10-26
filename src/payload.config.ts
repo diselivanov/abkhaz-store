@@ -8,6 +8,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Avatars } from './collections/Avatars'
 import { Posts } from './collections/Posts'
 import { Categories } from './collections/Categories'
 import { Tags } from './collections/Tags'
@@ -32,7 +33,7 @@ export default buildConfig({
     supportedLanguages: { ru },
     fallbackLanguage: 'ru',
   },
-  collections: [Users, Media, Posts, Categories, Tags],
+  collections: [Users, Media, Avatars, Posts, Categories, Tags],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
