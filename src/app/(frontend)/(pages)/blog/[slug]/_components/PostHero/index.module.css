@@ -72,18 +72,41 @@
 .mapButton {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-1);
-  height: var(--control-h-sm);
-  padding: 0 var(--sp-4);
+  justify-content: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  padding: 0;
   border-radius: var(--radius-full);
   background: var(--bg);
+  border: none;
   color: var(--fg);
-  font-size: var(--fs-control);
-  text-decoration: none;
-  user-select: none;
+  cursor: pointer;
 }
 
 .mapButton:hover {
+  background: var(--bg-secondary);
+}
+
+.backButton {
+  display: none;
+  position: absolute;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  user-select: none;
+}
+
+.backButton:hover {
   background: var(--bg-secondary);
 }
 
@@ -104,5 +127,11 @@
 
   .meta {
     gap: var(--sp-1);
+  }
+
+  .backButton {
+    display: inline-flex;
+    top: var(--sp-2);
+    left: var(--sp-2);
   }
 }

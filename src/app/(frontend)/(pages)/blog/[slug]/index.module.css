@@ -89,7 +89,15 @@
 
 @media (max-width: 768px) {
   .root {
-    padding: var(--sp-3);
+    padding: 0;
+  }
+
+  .content {
+    padding: 0 var(--sp-3);
+  }
+
+  .related {
+     padding: 0 var(--sp-3);
   }
 
   .content h2 {
@@ -106,5 +114,9 @@
 
   .contentFigure {
     margin: var(--sp-2) 0;
+  }
+
+  .breadcrumbs {
+    display: none;
   }
 }

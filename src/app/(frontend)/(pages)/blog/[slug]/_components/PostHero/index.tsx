@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import Icon from '@/components/Icon'
 import type { Media, User } from '@/payload-types'
 import { ShareButton } from '../ShareButton'
@@ -37,6 +40,7 @@ export function PostHero({
 }: Props) {
   const coords = parseCoords(location)
   const mapUrl = coords ? `https://yandex.ru/maps/?pt=${coords.lng},${coords.lat}&z=16&l=map` : null
+  const router = useRouter()
 
   return (
     <div className={styles.hero}>
@@ -52,10 +56,25 @@ export function PostHero({
       )}
       <div className={styles.overlay} />
 
+      <button
+        type="button"
+        className={styles.backButton}
+        onClick={() => router.back()}
+        aria-label="Назад"
+      >
+        <Icon name="chevronLeft" size={24} />
+      </button>
+
       <div className={styles.actions}>
         {mapUrl && (
-          <a href={mapUrl} target="_blank" rel="noopener noreferrer" className={styles.mapButton}>
-            Показать на карте
+          <a
+            href={mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.mapButton}
+            aria-label="Показать на карте"
+          >
+            <Icon name="mapPin" size={18} />
           </a>
         )}
         <ShareButton title={title} url={shareUrl} />

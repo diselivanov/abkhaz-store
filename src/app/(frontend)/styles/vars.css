@@ -25,11 +25,11 @@
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.06);
 
   --radius-sm: 7px;
-  --radius-md: 12px;
+  --radius-md: 16px;
   --radius-full: 9999px;
 
   --control-h: 38px;
-  --control-h-sm: 32px;
+  --control-h-sm: 34px;
 
   --header-h: 50px;
   --sidebar-w: 190px;
@@ -67,7 +67,7 @@
     --fs-lg: 18px;
     --fs-xl: 18px;
 
-    --control-h: 40px;
-    --control-h-sm: 34px;
+    --control-h: 42px;
+    --control-h-sm: 38px;
   }
 }

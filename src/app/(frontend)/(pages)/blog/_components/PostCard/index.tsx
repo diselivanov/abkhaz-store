@@ -35,21 +35,22 @@ export function PostCard({ post, priority = false }: Props) {
 
   return (
     <Link href={`/blog/${post.slug}`} className={styles.card}>
-      {cover?.url ? (
-        <Image
-          src={cover.url.replace(/^https?:\/\/[^/]+/, '')}
-          alt={cover.alt || post.title}
-          width={cover.width || 800}
-          height={cover.height || 450}
-          className={styles.cover}
-          priority={priority}
-          loading={priority ? 'eager' : 'lazy'}
-        />
-      ) : (
-        <div className={styles.cover} />
-      )}
-
-      {category && <span className={styles.badge}>{category.title}</span>}
+      <div className={styles.media}>
+        {cover?.url ? (
+          <Image
+            src={cover.url.replace(/^https?:\/\/[^/]+/, '')}
+            alt={cover.alt || post.title}
+            width={cover.width || 800}
+            height={cover.height || 450}
+            className={styles.cover}
+            priority={priority}
+            loading={priority ? 'eager' : 'lazy'}
+          />
+        ) : (
+          <div className={styles.cover} />
+        )}
+        {category && <span className={styles.badge}>{category.title}</span>}
+      </div>
 
       <div className={styles.body}>
         <h2 className={styles.title}>{post.title}</h2>

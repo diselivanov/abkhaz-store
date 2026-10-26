@@ -36,12 +36,7 @@ export function ShareButton({ title, url }: Props) {
   }
 
   return (
-    <button
-      type="button"
-      className={styles.button}
-      onClick={onClick}
-      aria-label={copied ? 'Ссылка скопирована' : 'Поделиться'}
-    >
+    <button type="button" className={styles.button} onClick={onClick} aria-label={'Поделиться'}>
       <Icon name="share" size={20} />
     </button>
   )
