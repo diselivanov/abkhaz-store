@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useDocumentInfo } from '@payloadcms/ui'
-import { toggleBlockUserAction } from '@/lib/auth/admin'
+import { toggleBlockUserAction } from '@/lib/auth/admin-actions'
 import styles from './index.module.css'
 
 export function BlockUserButton() {

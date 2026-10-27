@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { fetchBlogPosts } from '@/lib/blog/fetchBlogPosts'
+import { fetchBlogPosts } from '@/lib/blog/queries'
 
 export const revalidate = 0
 
