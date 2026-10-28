@@ -3,8 +3,8 @@ import type { CollectionConfig } from 'payload'
 export const Media: CollectionConfig = {
   slug: 'media',
   labels: {
-    singular: 'Медиа',
-    plural: 'Медиа',
+    singular: 'Фото',
+    plural: 'Фото',
   },
   admin: {
     group: 'Блог',

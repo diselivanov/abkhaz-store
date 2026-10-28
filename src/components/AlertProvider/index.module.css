@@ -26,7 +26,6 @@
   color: var(--white);
   text-align: center;
   box-shadow: var(--shadow-sm);
-  user-select: none;
 }
 
 .error {

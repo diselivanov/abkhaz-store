@@ -49,6 +49,12 @@ export const Users: CollectionConfig = {
       label: 'Аватар',
     },
     {
+      name: 'phone',
+      type: 'text',
+      label: 'Телефон',
+      admin: { placeholder: '+7 900 000-00-00' },
+    },
+    {
       name: 'role',
       type: 'select',
       required: true,

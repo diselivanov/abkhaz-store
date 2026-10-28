@@ -85,7 +85,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           <Layout>{children}</Layout>
         </AlertProvider>
         <JsonLd data={siteLd} />
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
       (function(m,e,t,r,i,k,a){
@@ -118,7 +118,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       gtag('config', 'G-LX3RC11ZLG');
     `,
           }}
-        />
+        /> */}
       </body>
     </html>
   )

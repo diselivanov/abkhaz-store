@@ -73,6 +73,11 @@ export interface Config {
     posts: Post;
     categories: Category;
     tags: Tag;
+    listingCities: ListingCity;
+    listingCategories: ListingCategory;
+    listingSubcategories: ListingSubcategory;
+    listingAds: ListingAd;
+    listingImages: ListingImage;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +91,11 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
+    listingCities: ListingCitiesSelect<false> | ListingCitiesSelect<true>;
+    listingCategories: ListingCategoriesSelect<false> | ListingCategoriesSelect<true>;
+    listingSubcategories: ListingSubcategoriesSelect<false> | ListingSubcategoriesSelect<true>;
+    listingAds: ListingAdsSelect<false> | ListingAdsSelect<true>;
+    listingImages: ListingImagesSelect<false> | ListingImagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -133,6 +143,7 @@ export interface User {
   id: number;
   name?: string | null;
   avatar?: (number | null) | Avatar;
+  phone?: string | null;
   role: 'admin' | 'user';
   blockedAt?: string | null;
   updatedAt: string;
@@ -256,6 +267,91 @@ export interface Tag {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingCities".
+ */
+export interface ListingCity {
+  id: number;
+  title: string;
+  slug: string;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingCategories".
+ */
+export interface ListingCategory {
+  id: number;
+  title: string;
+  slug: string;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingSubcategories".
+ */
+export interface ListingSubcategory {
+  id: number;
+  category: number | ListingCategory;
+  title: string;
+  slug: string;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingAds".
+ */
+export interface ListingAd {
+  id: number;
+  title: string;
+  slug: string;
+  category: number | ListingCategory;
+  subcategory: number | ListingSubcategory;
+  city: number | ListingCity;
+  description: string;
+  price: number;
+  attributes?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  author: number | User;
+  status: 'pending' | 'active' | 'completed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingImages".
+ */
+export interface ListingImage {
+  id: number;
+  ad: number | ListingAd;
+  order: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -301,6 +397,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tags';
         value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'listingCities';
+        value: number | ListingCity;
+      } | null)
+    | ({
+        relationTo: 'listingCategories';
+        value: number | ListingCategory;
+      } | null)
+    | ({
+        relationTo: 'listingSubcategories';
+        value: number | ListingSubcategory;
+      } | null)
+    | ({
+        relationTo: 'listingAds';
+        value: number | ListingAd;
+      } | null)
+    | ({
+        relationTo: 'listingImages';
+        value: number | ListingImage;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -351,6 +467,7 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   avatar?: T;
+  phone?: T;
   role?: T;
   blockedAt?: T;
   updatedAt?: T;
@@ -452,6 +569,78 @@ export interface TagsSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingCities_select".
+ */
+export interface ListingCitiesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingCategories_select".
+ */
+export interface ListingCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingSubcategories_select".
+ */
+export interface ListingSubcategoriesSelect<T extends boolean = true> {
+  category?: T;
+  title?: T;
+  slug?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingAds_select".
+ */
+export interface ListingAdsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  category?: T;
+  subcategory?: T;
+  city?: T;
+  description?: T;
+  price?: T;
+  attributes?: T;
+  author?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listingImages_select".
+ */
+export interface ListingImagesSelect<T extends boolean = true> {
+  ad?: T;
+  order?: T;
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

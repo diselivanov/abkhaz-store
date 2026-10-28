@@ -1,0 +1,60 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  width: 100%;
+}
+
+.inputWrap {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  min-height: calc(var(--control-h) * 3);
+  padding: calc(var(--sp-2) + 4px) var(--sp-3) var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--fs-control);
+  background: var(--bg);
+  color: var(--fg);
+  resize: vertical;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.label {
+  position: absolute;
+  left: var(--sp-3);
+  top: var(--sp-3);
+  font-size: var(--fs-control);
+  color: var(--fg-secondary);
+  pointer-events: none;
+  background: var(--bg);
+  padding: 0 var(--sp-1);
+  transition:
+    top var(--transition) ease,
+    font-size var(--transition) ease,
+    color var(--transition) ease;
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: var(--fs-xs);
+  color: var(--fg-secondary);
+}
+
+.inputError {
+  border-color: var(--danger);
+}
+
+.error {
+  font-size: var(--fs-xs);
+  color: var(--danger);
+}

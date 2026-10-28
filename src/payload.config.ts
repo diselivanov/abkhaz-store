@@ -7,11 +7,16 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
-import { Media } from './collections/Media'
+import { Media } from './collections/BlogMedia'
 import { Avatars } from './collections/Avatars'
-import { Posts } from './collections/Posts'
-import { Categories } from './collections/Categories'
-import { Tags } from './collections/Tags'
+import { Posts } from './collections/BlogPosts'
+import { Categories } from './collections/BlogCategories'
+import { Tags } from './collections/BlogTags'
+import { listingCities } from './collections/ListingCities'
+import { listingCategories } from './collections/ListingCategories'
+import { listingSubcategories } from './collections/ListingSubcategories'
+import { listingAds } from './collections/ListingAds'
+import { listingImages } from './collections/ListingImages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,7 +38,19 @@ export default buildConfig({
     supportedLanguages: { ru },
     fallbackLanguage: 'ru',
   },
-  collections: [Users, Media, Avatars, Posts, Categories, Tags],
+  collections: [
+    Users,
+    Media,
+    Avatars,
+    Posts,
+    Categories,
+    Tags,
+    listingCities,
+    listingCategories,
+    listingSubcategories,
+    listingAds,
+    listingImages,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
