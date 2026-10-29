@@ -158,7 +158,7 @@ export function ListingForm({
 
   const onSubmit = (data: FormValues) => {
     if (images.length < 1) {
-      alert.error('Минимум 1 изображение')
+      alert.error('Загрузите минимум одно фото')
       return
     }
 

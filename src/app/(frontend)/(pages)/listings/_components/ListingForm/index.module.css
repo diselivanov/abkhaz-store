@@ -5,11 +5,12 @@
   width: 100%;
   max-width: var(--form-w-md);
   margin: 0 auto;
-  padding: 0;
+  padding: var(--sp-4) 0;
 }
 
 .title {
   margin: 0;
+  margin-bottom: var(--sp-1);
   font-size: var(--fs-lg);
   font-weight: var(--fw);
 }

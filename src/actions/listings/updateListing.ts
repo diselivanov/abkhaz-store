@@ -6,6 +6,7 @@ import config from '@/payload.config'
 import { buildListingSchema } from '@/lib/listings/schemas'
 import { getAttributeDef } from '@/lib/listings/attributeSchemas'
 import { parseAttributes } from '@/lib/listings/formData'
+import { generateUniqueSlug } from '@/lib/listings/slugify'
 import { getCategoryBySlug, getSubcategoryBySlug, getCityBySlug } from '@/lib/listings/lookups'
 import { removeFilesByFilenames } from '@/lib/listings/files'
 
@@ -91,7 +92,7 @@ export async function updateListingAction(
     .filter((f): f is File => f instanceof File && f.size > 0)
 
   const totalImages = existingImages.length + newImages.length
-  if (totalImages < 1) return { ok: false, error: 'Минимум 1 изображение' }
+  if (totalImages < 1) return { ok: false, error: 'Загрузите минимум одно фото' }
   if (totalImages > MAX_IMAGES) return { ok: false, error: `Максимум ${MAX_IMAGES} изображений` }
 
   for (const file of newImages) {
@@ -117,12 +118,15 @@ export async function updateListingAction(
   const createdFilenames: string[] = []
   const createdImageIds: number[] = []
 
+  const slug = await generateUniqueSlug(raw.title, adId)
+
   try {
     await payload.update({
       collection: 'listingAds',
       id: adId,
       data: {
         title: parsed.data.title,
+        slug,
         category: category.id,
         subcategory: subcategory.id,
         city: city.id,
@@ -170,7 +174,7 @@ export async function updateListingAction(
 
     await removeFilesByFilenames(deleteFilenames)
 
-    return { ok: true, slug: existing.slug }
+    return { ok: true, slug }
   } catch {
     for (const id of createdImageIds) {
       try {

@@ -9,7 +9,7 @@ import styles from './index.module.css'
 type Props = {
   fields: Record<string, FieldMeta>
   register: (name: string) => Record<string, unknown>
-  errors: Record<string, { message?: string } | undefined>
+  errors: any
   values: Record<string, unknown>
   setValue: (name: string, value: unknown) => void
   carBrandOptions: SearchSelectOption[]
@@ -38,7 +38,7 @@ export function AttributesFields({
       <div className={styles.list}>
         {Object.entries(fields).map(([key, meta]) => {
           const name = `attributes.${key}`
-          const error = errors[name]?.message
+          const error = errors.attributes?.[key]?.message as string | undefined
           const current = String(values[key] ?? '')
 
           if (meta.type === 'select') {
@@ -89,15 +89,28 @@ export function AttributesFields({
             )
           }
 
+          if (meta.type === 'int' || meta.type === 'number') {
+            return (
+              <Input
+                key={key}
+                id={name}
+                type="number"
+                label={meta.label}
+                step="any"
+                min={meta.min}
+                max={meta.max}
+                {...register(name)}
+                error={error}
+              />
+            )
+          }
+
           return (
             <Input
               key={key}
               id={name}
-              type={meta.type === 'number' ? 'number' : 'text'}
+              type="text"
               label={meta.label}
-              step={meta.type === 'number' ? 'any' : undefined}
-              min={(meta as { min?: number }).min}
-              max={(meta as { max?: number }).max}
               {...register(name)}
               error={error}
             />

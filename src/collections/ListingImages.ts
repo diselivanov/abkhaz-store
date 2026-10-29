@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 export const listingImages: CollectionConfig = {
   slug: 'listingImages',
-  labels: { singular: 'Медиа', plural: 'Медиа' },
+  labels: { singular: 'Фото', plural: 'Фото' },
   admin: { group: 'Объявления', defaultColumns: ['filename', 'ad', 'order'] },
   access: {
     read: () => true,

@@ -79,7 +79,7 @@ export function ImageUploader({ items, onChange, error }: Props) {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <span className={styles.title}>Фотографии</span>
+        <h2 className={styles.title}>Фотографии</h2>
         {error && <span className={styles.error}>{error}</span>}
       </div>
 
@@ -104,7 +104,7 @@ export function ImageUploader({ items, onChange, error }: Props) {
             onClick={() => inputRef.current?.click()}
             aria-label="Добавить фото"
           >
-            <Icon name="cross" size={24} className={styles.addIcon} />
+            <Icon name="imagePlus" size={24} />
           </button>
         )}
 

@@ -61,7 +61,7 @@ export async function createListingAction(formData: FormData): Promise<CreateLis
 
   const images = formData.getAll('images').filter((f): f is File => f instanceof File && f.size > 0)
 
-  if (images.length < 1) return { ok: false, error: 'Минимум 1 изображение' }
+  if (images.length < 1) return { ok: false, error: 'Загрузите минимум одно фото' }
   if (images.length > MAX_IMAGES) return { ok: false, error: `Максимум ${MAX_IMAGES} изображений` }
 
   for (const file of images) {

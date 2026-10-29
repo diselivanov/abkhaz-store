@@ -12,8 +12,10 @@
 }
 
 .title {
-  font-size: var(--fs-control);
-  color: var(--fg-secondary);
+  margin: 0;
+  margin-bottom: var(--sp-1);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw);
 }
 
 .scrollWrap {
@@ -39,7 +41,7 @@
   flex-shrink: 0;
   width: 110px;
   height: 110px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--bg-secondary);
   cursor: grab;
@@ -94,11 +96,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   padding: 0;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--fg-secondary);
   cursor: pointer;
@@ -107,10 +109,6 @@
 
 .addTile:hover {
   background: var(--bg-secondary);
-}
-
-.addIcon {
-  transform: rotate(45deg);
 }
 
 .error {

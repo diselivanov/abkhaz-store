@@ -42,37 +42,49 @@ const rentTermOptions: SelectOption[] = [
   { value: 'long', label: 'Долгосрочно' },
 ]
 
-const intField = () => z.number({ message: 'Введите число' }).int('Введите целое число').optional()
-const numberField = () => z.number({ message: 'Введите число' }).optional()
+const roomsOptions: SelectOption[] = [
+  { value: 'studio', label: 'Студия' },
+  { value: 'free', label: 'Свободная планировка' },
+  { value: '1', label: '1' },
+  { value: '2', label: '2' },
+  { value: '3', label: '3' },
+  { value: '4', label: '4' },
+  { value: '5', label: '5' },
+  { value: '6', label: '6+' },
+]
+
+const intField = () => z.number().int().optional()
+const numberField = () => z.number().optional()
+const selectField = (options: readonly [string, ...string[]]) => z.enum(options).optional()
 
 export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
   nedvizhimost: {
     kvartiry: {
       schema: z.object({
-        rooms: intField(),
+        rooms: selectField(['studio', 'free', '1', '2', '3', '4', '5', '6']),
         area: numberField(),
         floor: intField(),
         totalFloors: intField(),
       }),
       fields: {
-        rooms: { type: 'int', label: 'Количество комнат', min: 0 },
-        area: { type: 'number', label: 'Общая площадь, м²', min: 0 },
-        floor: { type: 'int', label: 'Этаж', min: 1 },
-        totalFloors: { type: 'int', label: 'Этажность дома', min: 1 },
+        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        area: { type: 'number', label: 'Общая площадь, м²' },
+        floor: { type: 'int', label: 'Этаж' },
+        totalFloors: { type: 'int', label: 'Этажность дома' },
       },
     },
     'doma-dachi-kottedzhi': {
       schema: z.object({
         houseArea: numberField(),
         landArea: numberField(),
-        rooms: intField(),
+        rooms: selectField(['studio', 'free', '1', '2', '3', '4', '5', '6']),
         floors: intField(),
       }),
       fields: {
-        houseArea: { type: 'number', label: 'Площадь дома, м²', min: 0 },
-        landArea: { type: 'number', label: 'Площадь участка, соток', min: 0 },
-        rooms: { type: 'int', label: 'Количество комнат', min: 0 },
-        floors: { type: 'int', label: 'Этажей', min: 1 },
+        houseArea: { type: 'number', label: 'Площадь дома, м²' },
+        landArea: { type: 'number', label: 'Площадь участка, соток' },
+        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        floors: { type: 'int', label: 'Этажей' },
       },
     },
     'kommercheskaya-nedvizhimost': {
@@ -80,7 +92,7 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
         area: numberField(),
       }),
       fields: {
-        area: { type: 'number', label: 'Площадь, м²', min: 0 },
+        area: { type: 'number', label: 'Площадь, м²' },
       },
     },
     'zemelnye-uchastki': {
@@ -88,49 +100,49 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
         area: numberField(),
       }),
       fields: {
-        area: { type: 'number', label: 'Площадь, соток', min: 0 },
+        area: { type: 'number', label: 'Площадь, соток' },
       },
     },
   },
   'arenda-zhilya': {
     'arenda-kvartiry': {
       schema: z.object({
-        rooms: intField(),
+        rooms: selectField(['studio', 'free', '1', '2', '3', '4', '5', '6']),
         area: numberField(),
         floor: intField(),
         totalFloors: intField(),
-        rentTerm: z.enum(['daily', 'long']).optional(),
+        rentTerm: selectField(['daily', 'long']),
       }),
       fields: {
         rentTerm: { type: 'select', label: 'Срок аренды', options: rentTermOptions },
-        rooms: { type: 'int', label: 'Количество комнат', min: 0 },
-        area: { type: 'number', label: 'Общая площадь, м²', min: 0 },
-        floor: { type: 'int', label: 'Этаж', min: 1 },
-        totalFloors: { type: 'int', label: 'Этажность дома', min: 1 },
+        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        area: { type: 'number', label: 'Общая площадь, м²' },
+        floor: { type: 'int', label: 'Этаж' },
+        totalFloors: { type: 'int', label: 'Этажность дома' },
       },
     },
     'arenda-komnaty': {
       schema: z.object({
         area: numberField(),
-        rentTerm: z.enum(['daily', 'long']).optional(),
+        rentTerm: selectField(['daily', 'long']),
       }),
       fields: {
         rentTerm: { type: 'select', label: 'Срок аренды', options: rentTermOptions },
-        area: { type: 'number', label: 'Площадь комнаты, м²', min: 0 },
+        area: { type: 'number', label: 'Площадь комнаты, м²' },
       },
     },
     'arenda-doma-dachi-kottedzhi': {
       schema: z.object({
         houseArea: numberField(),
         landArea: numberField(),
-        rooms: intField(),
-        rentTerm: z.enum(['daily', 'long']).optional(),
+        rooms: selectField(['studio', 'free', '1', '2', '3', '4', '5', '6']),
+        rentTerm: selectField(['daily', 'long']),
       }),
       fields: {
         rentTerm: { type: 'select', label: 'Срок аренды', options: rentTermOptions },
-        houseArea: { type: 'number', label: 'Площадь дома, м²', min: 0 },
-        landArea: { type: 'number', label: 'Площадь участка, соток', min: 0 },
-        rooms: { type: 'int', label: 'Количество комнат', min: 0 },
+        houseArea: { type: 'number', label: 'Площадь дома, м²' },
+        landArea: { type: 'number', label: 'Площадь участка, соток' },
+        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
       },
     },
   },
@@ -139,18 +151,18 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
       schema: z.object({
         brand: z.string().optional(),
         model: z.string().optional(),
-        year: z.number().int().min(1900).max(currentYear()).optional(),
+        year: intField(),
         mileage: intField(),
-        transmission: z.enum(['automatic', 'manual', 'cvt', 'robot']).optional(),
-        fuel: z.enum(['petrol', 'diesel', 'gas', 'hybrid', 'electric']).optional(),
-        customsCleared: z.enum(['yes', 'no']).optional(),
-        exchange: z.enum(['yes', 'no']).optional(),
+        transmission: selectField(['automatic', 'manual', 'cvt', 'robot']),
+        fuel: selectField(['petrol', 'diesel', 'gas', 'hybrid', 'electric']),
+        customsCleared: selectField(['yes', 'no']),
+        exchange: selectField(['yes', 'no']),
       }),
       fields: {
         brand: { type: 'carBrand', label: 'Марка' },
         model: { type: 'carModel', label: 'Модель' },
-        year: { type: 'int', label: 'Год выпуска', min: 1900, max: currentYear() },
-        mileage: { type: 'int', label: 'Пробег, км', min: 0 },
+        year: { type: 'int', label: 'Год выпуска' },
+        mileage: { type: 'int', label: 'Пробег, км' },
         transmission: { type: 'select', label: 'Коробка передач', options: transmissionOptions },
         fuel: { type: 'select', label: 'Тип топлива', options: fuelOptions },
         customsCleared: { type: 'select', label: 'Растаможен', options: yesNoOptions },
