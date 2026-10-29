@@ -5,6 +5,7 @@ import styles from './index.module.css'
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'ghost'
   size?: 'sm' | 'md'
+  round?: boolean
   loading?: boolean
   full?: boolean
 }
@@ -12,6 +13,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export function Button({
   variant = 'primary',
   size = 'md',
+  round = false,
   loading = false,
   full = false,
   disabled,
@@ -23,7 +25,7 @@ export function Button({
     <button
       {...rest}
       disabled={disabled || loading}
-      className={`${styles.btn} ${styles[variant]} ${styles[size]} ${full ? styles.full : ''} ${className}`}
+      className={`${styles.btn} ${styles[variant]} ${styles[size]} ${round ? styles.round : ''} ${full ? styles.full : ''} ${className}`}
     >
       {loading ? 'Загрузка…' : children}
     </button>

@@ -1,0 +1,90 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: var(--bg);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-sm);
+  line-height: 1.3;
+}
+
+.price {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-md);
+  color: var(--fg);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-control);
+  color: var(--fg-secondary);
+}
+
+.metaItem {
+  position: relative;
+}
+
+.metaItem + .metaItem::before {
+  content: '·';
+  position: absolute;
+  left: calc(var(--sp-2) * -1 + 2px);
+  color: var(--fg-secondary);
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.author:hover .name {
+  text-decoration: underline;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-weight: var(--fw-sm);
+  font-size: var(--fs-base);
+}
+
+.date {
+  font-size: var(--fs-xs);
+  color: var(--fg-secondary);
+}
+
+.phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--control-h);
+  padding: 0 var(--sp-4);
+  border-radius: var(--radius-sm);
+  background: var(--btn);
+  color: var(--btn-fg);
+  font-weight: var(--fw-sm);
+  text-decoration: none;
+}
+
+.phone:hover {
+  background: var(--btn-hover);
+}

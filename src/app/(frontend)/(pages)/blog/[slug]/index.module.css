@@ -19,7 +19,7 @@
 .content h4,
 .content h5,
 .content h6 {
-  font-weight: var(--fw);
+  font-weight: var(--fw-sm);
   color: var(--fg);
 }
 

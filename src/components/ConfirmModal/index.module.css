@@ -23,8 +23,8 @@
 
 .title {
   margin: 0;
-  font-size: var(--fs-lg);
-  font-weight: var(--fw);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-sm);
 }
 
 .description {

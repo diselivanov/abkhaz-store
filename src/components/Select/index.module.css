@@ -48,6 +48,12 @@
   white-space: nowrap;
 }
 
+.placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .chevron {
   color: var(--fg-secondary);
   flex-shrink: 0;
@@ -116,7 +122,7 @@
   cursor: pointer;
 }
 
-.optionHighlight {
+.option:hover {
   background: var(--bg-secondary);
 }
 

@@ -53,18 +53,18 @@ export function ConfirmModal({
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            initial={reduce ? false : { opacity: 0, scale: 0.96, y: 8 }}
-            animate={reduce ? undefined : { opacity: 1, scale: 1, y: 0 }}
-            exit={reduce ? undefined : { opacity: 0, scale: 0.96, y: 8 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+            animate={reduce ? undefined : { opacity: 1, scale: 1 }}
+            exit={reduce ? undefined : { opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
           >
             <h2 className={styles.title}>{title}</h2>
             {description && <p className={styles.description}>{description}</p>}
             <div className={styles.actions}>
-              <Button variant="ghost" onClick={onCancel} disabled={loading}>
+              <Button variant="ghost" onClick={onCancel} disabled={loading} round>
                 {cancelLabel}
               </Button>
-              <Button onClick={onConfirm} loading={loading}>
+              <Button onClick={onConfirm} loading={loading} round>
                 {confirmLabel}
               </Button>
             </div>

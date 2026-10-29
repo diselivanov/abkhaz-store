@@ -15,6 +15,8 @@ export type UploadAvatarState = {
   success?: boolean
 }
 
+export type UpdateProfileResult = { ok: true } | { ok: false; error?: string }
+
 const COOKIE_NAME = 'payload-token'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 
@@ -162,5 +164,31 @@ export async function uploadAvatarAction(
     return { success: true }
   } catch {
     return { error: 'Не удалось загрузить аватар' }
+  }
+}
+
+export async function updateProfileAction(data: {
+  name: string
+  phone?: string
+}): Promise<UpdateProfileResult> {
+  const headers = await nextHeaders()
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers })
+
+  if (!user) return { ok: false, error: 'Не авторизован' }
+
+  try {
+    await payload.update({
+      collection: 'users',
+      id: user.id,
+      data: {
+        name: data.name,
+        phone: data.phone || null,
+      },
+    })
+    revalidatePath('/profile')
+    return { ok: true }
+  } catch {
+    return { ok: false, error: 'Не удалось сохранить профиль' }
   }
 }

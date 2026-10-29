@@ -108,6 +108,7 @@ export async function createListingAction(formData: FormData): Promise<CreateLis
           ad: ad.id,
           order: i,
           alt: parsed.data.title,
+          author: user.id,
         },
         file: {
           data: buffer,

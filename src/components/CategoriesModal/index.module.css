@@ -1,0 +1,237 @@
+.root {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay);
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 600px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.columns {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.categories {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-3);
+  width: 300px;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+
+.catItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  height: var(--control-h);
+  padding: 0 var(--sp-3);
+  cursor: default;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-control);
+  color: var(--fg);
+}
+
+.catLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.catIcon {
+  color: var(--fg-secondary);
+  flex-shrink: 0;
+}
+
+.catTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catArrow {
+  color: var(--fg-secondary);
+  flex-shrink: 0;
+}
+
+.catActive {
+  background: var(--bg-secondary);
+}
+
+.subcategories {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-3);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.subItem {
+  display: flex;
+  align-items: center;
+  height: var(--control-h);
+  padding: 0 var(--sp-3);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-control);
+  color: var(--fg);
+}
+
+.subItem:hover {
+  background: var(--bg-secondary);
+}
+
+.empty {
+  padding: var(--sp-3);
+  color: var(--fg-secondary);
+  font-size: var(--fs-control);
+}
+
+.mobilePanel {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .root {
+    top: 0;
+  }
+
+  .panel {
+    width: 100%;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+
+  .mobilePanel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .mobileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    height: var(--header-h);
+    padding-top: env(safe-area-inset-top);
+    padding: 0 var(--sp-4);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .mobileBack {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-h-sm);
+    height: var(--control-h-sm);
+    margin-left: calc(var(--sp-2) * -1);
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+  }
+
+  .mobileBack:active {
+    background: var(--bg-secondary);
+  }
+
+  .mobileClose {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-h-sm);
+    height: var(--control-h-sm);
+    margin-right: calc(var(--sp-2) * -1);
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+  }
+
+  .mobileClose:active {
+    background: var(--bg-secondary);
+  }
+
+  .mobileSpacer {
+    width: var(--control-h-sm);
+    height: var(--control-h-sm);
+  }
+
+  .mobileTitle {
+    font-size: var(--fs-control);
+    font-weight: var(--fw-sm);
+    color: var(--fg);
+    text-align: center;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobileSubs {
+    list-style: none;
+    margin: 0;
+    padding: var(--sp-2);
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .mobileSubItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    min-height: var(--control-h);
+    padding: var(--sp-2) var(--sp-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-base);
+    color: var(--fg);
+    cursor: pointer;
+  }
+
+  .mobileSubItem:active {
+    background: var(--bg-secondary);
+  }
+
+  .mobileSubLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-width: 0;
+  }
+}

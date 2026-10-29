@@ -49,3 +49,7 @@
 .plain:hover {
   text-decoration: underline;
 }
+
+.round {
+  border-radius: var(--radius-full);
+}

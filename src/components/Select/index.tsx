@@ -10,6 +10,7 @@ export type SelectOption = { value: string; label: string }
 type Props = {
   id?: string
   label?: string
+  placeholder?: string
   error?: string
   value: string
   onChange: (value: string) => void
@@ -17,7 +18,16 @@ type Props = {
   disabled?: boolean
 }
 
-export function Select({ id, label, error, value, onChange, options, disabled = false }: Props) {
+export function Select({
+  id,
+  label,
+  placeholder,
+  error,
+  value,
+  onChange,
+  options,
+  disabled = false,
+}: Props) {
   const [open, setOpen] = useState(false)
   const [highlight, setHighlight] = useState(0)
   const rootRef = useRef<HTMLDivElement | null>(null)
@@ -77,6 +87,7 @@ export function Select({ id, label, error, value, onChange, options, disabled = 
   }
 
   const floating = open || Boolean(selected)
+  const display = selected?.label || placeholder || ''
 
   return (
     <div className={styles.field} ref={rootRef}>
@@ -90,9 +101,9 @@ export function Select({ id, label, error, value, onChange, options, disabled = 
           tabIndex={disabled ? -1 : 0}
           onClick={openList}
           onKeyDown={onKeyDown}
-          className={`${styles.input} ${error ? styles.inputError : ''} ${label ? styles.hasLabel : ''} ${disabled ? styles.inputDisabled : ''} ${open ? styles.inputFocused : ''}`}
+          className={`${styles.input} ${error ? styles.inputError : ''} ${disabled ? styles.inputDisabled : ''} ${open ? styles.inputFocused : ''}`}
         >
-          <span className={styles.value}>{selected?.label || ''}</span>
+          <span className={selected ? styles.value : styles.placeholder}>{display}</span>
           <Icon name="chevronUpDown" size={14} className={styles.chevron} />
         </div>
         {label && (

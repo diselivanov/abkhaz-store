@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Avatar } from '@/components/Avatar'
 import { LinkButton } from '@/components/LinkButton'
-import { LogoutButton } from './LogoutButton'
 
 type Me = {
   id: number
@@ -48,7 +47,7 @@ export function AuthActions() {
 
   if (!me) {
     return (
-      <LinkButton href="/sign-in" variant="primary" size="sm">
+      <LinkButton href="/sign-in" variant="primary" size="sm" round>
         Войти
       </LinkButton>
     )
@@ -57,9 +56,8 @@ export function AuthActions() {
   return (
     <>
       <Link href="/profile" aria-label="Профиль">
-        <Avatar src={me.avatarUrl} name={me.name || me.email} size={28} />
+        <Avatar src={me.avatarUrl} name={me.name || me.email} size={34} />
       </Link>
-      <LogoutButton />
     </>
   )
 }

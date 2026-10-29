@@ -6,7 +6,11 @@ import { Button } from '@/components/Button'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { signOutAction } from '@/lib/auth/actions'
 
-export function LogoutButton() {
+type Props = {
+  full?: boolean
+}
+
+export function LogoutButton({ full = false }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [pending, startTransition] = useTransition()
@@ -22,7 +26,7 @@ export function LogoutButton() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" onClick={() => setOpen(true)}>
+      <Button variant="ghost" size="md" full={full} onClick={() => setOpen(true)}>
         Выйти
       </Button>
       <ConfirmModal

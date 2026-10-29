@@ -1,0 +1,10 @@
+.wrapper {
+  display: flex;
+  max-width: var(--form-w-sm);
+  margin: 0 auto;
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+}

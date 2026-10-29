@@ -12,6 +12,6 @@
   border-radius: var(--radius-full);
   background: var(--blue-10);
   color: var(--btn);
-  font-weight: var(--fw);
+  font-weight: var(--fw-sm);
   user-select: none;
 }

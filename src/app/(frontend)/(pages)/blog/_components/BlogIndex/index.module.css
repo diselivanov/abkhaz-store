@@ -30,7 +30,7 @@
 
 .title {
   font-size: var(--fs-xl);
-  font-weight: var(--fw);
+  font-weight: var(--fw-sm);
   margin: 0;
 }
 

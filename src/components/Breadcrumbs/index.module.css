@@ -27,3 +27,18 @@
   color: var(--fg-secondary);
   opacity: 0.6;
 }
+
+.last {
+  display: inline-block;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+@media (max-width: 768px) {
+  .root {
+    display: none;
+  }
+}

@@ -336,6 +336,7 @@ export interface ListingAd {
 export interface ListingImage {
   id: number;
   ad: number | ListingAd;
+  author?: (number | null) | User;
   order: number;
   alt?: string | null;
   updatedAt: string;
@@ -628,6 +629,7 @@ export interface ListingAdsSelect<T extends boolean = true> {
  */
 export interface ListingImagesSelect<T extends boolean = true> {
   ad?: T;
+  author?: T;
   order?: T;
   alt?: T;
   updatedAt?: T;

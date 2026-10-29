@@ -12,5 +12,5 @@
   margin: 0;
   margin-bottom: var(--sp-1);
   font-size: var(--fs-lg);
-  font-weight: var(--fw);
+  font-weight: var(--fw-sm);
 }

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(serverUrl),
   title: {
     default: 'Abkhaz Store',
-    template: '%s — Abkhaz Store',
+    template: 'Abkhaz Store — %s',
   },
   description: 'Открой для себя Абхазию: города, места, пляжи, маршруты и статьи.',
   applicationName: 'Abkhaz Store',

@@ -67,7 +67,7 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
         totalFloors: intField(),
       }),
       fields: {
-        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        rooms: { type: 'select', label: 'Комнат', options: roomsOptions },
         area: { type: 'number', label: 'Общая площадь, м²' },
         floor: { type: 'int', label: 'Этаж' },
         totalFloors: { type: 'int', label: 'Этажность дома' },
@@ -83,7 +83,7 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
       fields: {
         houseArea: { type: 'number', label: 'Площадь дома, м²' },
         landArea: { type: 'number', label: 'Площадь участка, соток' },
-        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        rooms: { type: 'select', label: 'Комнат', options: roomsOptions },
         floors: { type: 'int', label: 'Этажей' },
       },
     },
@@ -115,7 +115,7 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
       }),
       fields: {
         rentTerm: { type: 'select', label: 'Срок аренды', options: rentTermOptions },
-        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        rooms: { type: 'select', label: 'Комнат', options: roomsOptions },
         area: { type: 'number', label: 'Общая площадь, м²' },
         floor: { type: 'int', label: 'Этаж' },
         totalFloors: { type: 'int', label: 'Этажность дома' },
@@ -142,7 +142,7 @@ export const attributeDefs: Record<string, Record<string, AttributeDef>> = {
         rentTerm: { type: 'select', label: 'Срок аренды', options: rentTermOptions },
         houseArea: { type: 'number', label: 'Площадь дома, м²' },
         landArea: { type: 'number', label: 'Площадь участка, соток' },
-        rooms: { type: 'select', label: 'Количество комнат', options: roomsOptions },
+        rooms: { type: 'select', label: 'Комнат', options: roomsOptions },
       },
     },
   },

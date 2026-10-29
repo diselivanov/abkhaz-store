@@ -7,13 +7,17 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
-  images: {
-    localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/api/avatars/file/**' }],
-  },
   experimental: {
     serverActions: {
       bodySizeLimit: '50mb',
     },
+  },
+  images: {
+    localPatterns: [
+      { pathname: '/api/media/file/**' },
+      { pathname: '/api/avatars/file/**' },
+      { pathname: '/api/listingImages/file/**' },
+    ],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

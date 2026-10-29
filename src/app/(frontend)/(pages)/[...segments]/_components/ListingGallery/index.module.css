@@ -1,0 +1,148 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.main {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.track {
+  display: none;
+}
+
+.slider {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background var(--transition) ease;
+}
+
+.navButton:hover {
+  background: var(--bg-secondary);
+}
+
+.navPrev {
+  left: var(--sp-3);
+}
+
+.navNext {
+  right: var(--sp-3);
+}
+
+.actions {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  z-index: 10;
+}
+
+.thumbs {
+  display: flex;
+  gap: var(--sp-1);
+  overflow-x: auto;
+  padding-bottom: var(--sp-1);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.thumbActive {
+  border-color: var(--btn);
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 768px) {
+  .main {
+    touch-action: pan-y;
+  }
+
+  .track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+  }
+
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .track .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  .slider {
+    display: none;
+  }
+
+  .actions {
+    top: var(--sp-2);
+    right: var(--sp-2);
+  }
+}

@@ -133,6 +133,7 @@ export async function updateListingAction(
         description: parsed.data.description,
         price: parsed.data.price!,
         attributes: def ? attributesRaw : undefined,
+        status: 'pending',
       },
     })
 
@@ -155,6 +156,7 @@ export async function updateListingAction(
           ad: adId,
           order: baseOrder + i,
           alt: parsed.data.title,
+          author: authorId,
         },
         file: {
           data: buffer,

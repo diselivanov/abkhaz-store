@@ -47,6 +47,10 @@
   background: var(--bg-secondary);
 }
 
+.round {
+  border-radius: var(--radius-full);
+}
+
 .full {
   width: 100%;
 }

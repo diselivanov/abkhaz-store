@@ -10,7 +10,7 @@
 
 .logo {
   font-size: 18px;
-  font-weight: var(--fw);
+  font-weight: var(--fw-md);
   color: var(--fg);
   text-decoration: none;
   justify-self: start;

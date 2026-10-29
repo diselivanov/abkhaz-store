@@ -1,0 +1,63 @@
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  width: 100%;
+}
+
+.label {
+  position: absolute;
+  left: var(--sp-3);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--fs-control);
+  color: var(--fg-secondary);
+  pointer-events: none;
+  background: var(--bg);
+  padding: 0 var(--sp-1);
+  transition:
+    top var(--transition) ease,
+    transform var(--transition) ease,
+    font-size var(--transition) ease,
+    color var(--transition) ease;
+}
+
+.field:focus-within .label,
+.field.hasValue .label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: var(--fs-xs);
+}
+
+.inputWrap {
+  position: relative;
+  width: 100%;
+}
+
+.phoneInput {
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--fs-control);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.phoneInput:focus {
+  outline: none;
+}
+
+.error {
+  font-size: var(--fs-xs);
+  color: var(--danger);
+}

@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+}
+
+.sentinel {
+  height: 1px;
+  width: 100%;
+}
+
+.empty {
+  text-align: center;
+  color: var(--fg-secondary);
+  padding: var(--sp-5) 0;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-2);
+  }
+}

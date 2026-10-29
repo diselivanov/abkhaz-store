@@ -208,7 +208,7 @@ export function ListingForm({
         return
       }
 
-      alert.success(mode === 'create' ? 'Объявление создано' : 'Объявление обновлено')
+      alert.success('Объявление отправлено на проверку')
       router.push('/')
       router.refresh()
     })

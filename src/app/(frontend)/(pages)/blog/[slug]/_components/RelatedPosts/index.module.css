@@ -1,6 +1,6 @@
 .title {
   font-size: var(--fs-lg);
-  font-weight: var(--fw);
+  font-weight: var(--fw-sm);
   margin: 0 0 var(--sp-3);
 }
 
