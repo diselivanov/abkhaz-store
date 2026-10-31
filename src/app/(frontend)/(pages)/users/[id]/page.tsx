@@ -101,6 +101,7 @@ export default async function UserProfilePage({ params }: Props) {
           description={user.description || null}
           avatarUrl={avatarUrl}
           createdAt={user.createdAt}
+          userId={user.id}
         />
         <UserListingsTabs listings={listings} />
       </div>
