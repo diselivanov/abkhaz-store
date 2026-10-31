@@ -4,8 +4,8 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { ListingImage, Media } from '@/payload-types'
-import { ProfileSidebar } from './ProfileSidebar'
-import { MyListingsTabs } from './MyListingsTabs'
+import { ProfileHeader } from './_components/ProfileHeader'
+import { MyListingsTabs } from './_components/MyListingsTabs'
 import styles from './index.module.css'
 
 export const metadata: Metadata = {
@@ -56,16 +56,17 @@ export default async function ProfilePage() {
   const listings = docs.map((d) => ({ ...d, images: imagesByAd.get(d.id) || [] }))
 
   return (
-    <div className={styles.layout}>
-      <ProfileSidebar
+    <div className={styles.root}>
+      <ProfileHeader
         name={user.name || 'Без имени'}
         phone={user.phone || null}
+        whatsapp={user.whatsapp || null}
+        telegram={user.telegram || null}
+        description={user.description || null}
         avatarUrl={avatarUrl}
         createdAt={user.createdAt}
       />
-      <div className={styles.content}>
-        <MyListingsTabs listings={listings} />
-      </div>
+      <MyListingsTabs listings={listings} />
     </div>
   )
 }

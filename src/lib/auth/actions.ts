@@ -170,6 +170,9 @@ export async function uploadAvatarAction(
 export async function updateProfileAction(data: {
   name: string
   phone?: string
+  whatsapp?: string
+  telegram?: string
+  description?: string
 }): Promise<UpdateProfileResult> {
   const headers = await nextHeaders()
   const payload = await getPayload({ config })
@@ -184,6 +187,9 @@ export async function updateProfileAction(data: {
       data: {
         name: data.name,
         phone: data.phone || null,
+        whatsapp: data.whatsapp || null,
+        telegram: data.telegram || null,
+        description: data.description || null,
       },
     })
     revalidatePath('/profile')

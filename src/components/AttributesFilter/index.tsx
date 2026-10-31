@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { FilterSelect } from '@/components/FilterSelect'
-import { SearchFilterSelect } from '@/components/SearchFilterSelect'
+import { Select } from '@/components/Select'
+import { SearchSelect } from '@/components/SearchSelect'
 import type { FieldMeta } from '@/lib/listings/attributeSchemas'
 
 type Props = {
@@ -59,22 +59,22 @@ export function AttributesFilter({ fields, values, onChange }: Props) {
   return (
     <>
       {hasCarBrand && (
-        <SearchFilterSelect
+        <SearchSelect
           id="filter-brand"
           value={values['brand'] || ''}
           onChange={(v) => onChange('brand', v)}
           options={carBrandOptions}
-          placeholder="Марка"
+          label="Марка"
         />
       )}
 
       {hasCarModel && (
-        <SearchFilterSelect
+        <SearchSelect
           id="filter-model"
           value={values['model'] || ''}
           onChange={(v) => onChange('model', v)}
           options={carModelOptions}
-          placeholder="Модель"
+          label="Модель"
           disabled={!values['brand'] || carModelLoading}
         />
       )}
@@ -82,13 +82,13 @@ export function AttributesFilter({ fields, values, onChange }: Props) {
       {entries.map(([key, meta]) => {
         if (meta.type !== 'select') return null
         return (
-          <FilterSelect
+          <Select
             key={key}
             id={`filter-${key}`}
             value={values[key] || ''}
             onChange={(v) => onChange(key, v)}
             options={meta.options.map((o) => ({ value: o.value, label: o.label }))}
-            placeholder={meta.label}
+            label={meta.label}
           />
         )
       })}

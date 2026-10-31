@@ -14,13 +14,14 @@
 .title {
   margin: 0;
   font-size: var(--fs-lg);
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
   line-height: 1.3;
+  word-break: break-word;
 }
 
 .price {
   font-size: var(--fs-xl);
-  font-weight: var(--fw-md);
+  font-weight: var(--fw);
   color: var(--fg);
 }
 
@@ -29,7 +30,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--sp-2);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
 }
 
@@ -60,11 +61,15 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .name {
-  font-weight: var(--fw-sm);
-  font-size: var(--fs-base);
+  font-weight: var(--fw);
+  font-size: var(--fs-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .date {
@@ -72,19 +77,61 @@
   color: var(--fg-secondary);
 }
 
-.phone {
+.contacts {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-width: 0;
+}
+
+.contactBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: var(--control-h);
-  padding: 0 var(--sp-4);
-  border-radius: var(--radius-sm);
-  background: var(--btn);
-  color: var(--btn-fg);
-  font-weight: var(--fw-sm);
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  color: var(--fg);
+  font-size: var(--fs-main);
+  font-weight: var(--fw);
   text-decoration: none;
+  transition: background var(--transition) ease;
+  flex: 1 1 0%;
+  min-width: 0;
 }
 
-.phone:hover {
-  background: var(--btn-hover);
+.contactBtn svg {
+  flex-shrink: 0;
+}
+
+.contactBtn span {
+  word-break: break-word;
+  min-width: 0;
+}
+
+.contactBtn:hover {
+  background: var(--bg-tertiary);
+}
+
+.noPhone {
+  font-size: var(--fs-main);
+  color: var(--fg-secondary);
+}
+
+@media (max-width: 768px) {
+  .root {
+    padding: 0 var(--sp-3);
+  }
+
+  .contacts {
+    flex-wrap: wrap;
+  }
+
+  .contactBtn {
+    padding: var(--sp-1) var(--sp-2);
+    flex: 1 1 auto;
+  }
 }

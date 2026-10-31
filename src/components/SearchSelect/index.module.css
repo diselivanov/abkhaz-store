@@ -22,7 +22,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font: inherit;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   background: var(--bg);
   color: var(--fg);
   cursor: pointer;
@@ -55,44 +55,12 @@
   transition: transform var(--transition) ease;
 }
 
-.searchWrap {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--fg-secondary);
-  pointer-events: none;
-}
-
-.searchInput {
-  width: 100%;
-  height: 100%;
-  padding: 0 0 0 20px;
-  border: none;
-  background: transparent;
-  color: var(--fg);
-  font: inherit;
-  font-size: var(--fs-control);
-}
-
-.searchInput:focus {
-  outline: none;
-}
-
 .label {
   position: absolute;
   left: var(--sp-3);
   top: 50%;
   transform: translateY(-50%);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   line-height: 1;
   color: var(--fg-secondary);
   pointer-events: none;
@@ -127,18 +95,57 @@
   right: 0;
   z-index: 50;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--bg);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 250px;
+}
+
+.dropdownSearch {
+  position: relative;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.dropdownSearchIcon {
+  position: absolute;
+  top: 50%;
+  left: var(--sp-3);
+  transform: translateY(-50%);
+  color: var(--fg-secondary);
+  pointer-events: none;
+}
+
+.dropdownSearchInput {
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 var(--sp-3) 0 calc(var(--sp-3) + 22px);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--fs-main);
+}
+
+.dropdownSearchInput::placeholder {
+  color: var(--fg-secondary);
+}
+
+.dropdownSearchInput:focus {
+  outline: none;
 }
 
 .list {
   margin: 0;
   padding: 0;
   list-style: none;
-  max-height: 240px;
   overflow-y: auto;
+  flex: 1;
+  max-height: 240px;
 }
 
 .option {
@@ -148,13 +155,20 @@
   gap: var(--sp-2);
   height: var(--control-h);
   padding: 0 var(--sp-3);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg);
   cursor: pointer;
+  user-select: none;
 }
 
-.option:hover {
-  background: var(--bg-secondary);
+.option:active {
+  background: var(--bg-tertiary);
+}
+
+@media (hover: hover) {
+  .option:hover {
+    background: var(--bg-secondary);
+  }
 }
 
 .optionLabel {
@@ -173,6 +187,82 @@
   align-items: center;
   height: var(--control-h);
   padding: 0 var(--sp-3);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
+}
+
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--overlay);
+}
+
+.drawerContent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2001;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  outline: none;
+  user-select: none;
+}
+
+.drawerTitle {
+  text-align: center;
+  padding: var(--sp-2) var(--sp-4) var(--sp-1);
+  font-size: var(--fs-main);
+  font-weight: var(--fw);
+  color: var(--fg);
+  user-select: none;
+}
+
+.drawerList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-2);
+  user-select: none;
+}
+
+.drawerList .list {
+  max-height: none;
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.drawerList .option {
+  height: auto;
+  min-height: var(--control-h);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.drawerList .option:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .dropdownSearch {
+    padding: var(--sp-2);
+  }
+
+  .dropdownSearchIcon {
+    left: calc(var(--sp-2) + var(--sp-3));
+  }
+
+  .dropdownSearchInput {
+    height: var(--control-h);
+    padding: 0 var(--sp-2) 0 calc(var(--sp-3) + 22px);
+    border-radius: var(--radius-full);
+    background: var(--bg);
+    font-size: var(--fs-main);
+  }
 }

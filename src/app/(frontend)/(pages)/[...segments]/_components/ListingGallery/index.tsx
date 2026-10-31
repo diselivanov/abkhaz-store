@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Icon from '@/components/Icon'
 import type { ListingImage } from '@/payload-types'
@@ -13,8 +14,9 @@ type Props = {
 }
 
 export function ListingGallery({ images, title, actions }: Props) {
+  const router = useRouter()
   const [active, setActive] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
   const thumbsRef = useRef<HTMLDivElement | null>(null)
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([])
   const scrollRef = useRef<HTMLDivElement | null>(null)
@@ -28,7 +30,7 @@ export function ListingGallery({ images, title, actions }: Props) {
   }, [])
 
   useEffect(() => {
-    if (isMobile) return
+    if (isMobile !== false) return
     const container = thumbsRef.current
     const activeThumb = thumbRefs.current[active]
     if (!container || !activeThumb) return
@@ -54,7 +56,7 @@ export function ListingGallery({ images, title, actions }: Props) {
   }
 
   const onScroll = () => {
-    if (!isMobile) return
+    if (isMobile !== true) return
     const el = scrollRef.current
     if (!el) return
     const width = el.clientWidth
@@ -66,7 +68,16 @@ export function ListingGallery({ images, title, actions }: Props) {
   return (
     <div className={styles.root}>
       <div className={styles.main}>
-        {isMobile && images.length > 1 ? (
+        <button
+          type="button"
+          className={styles.mobileBack}
+          onClick={() => router.back()}
+          aria-label="Назад"
+        >
+          <Icon name="chevronLeft" size={22} />
+        </button>
+
+        {isMobile === true ? (
           <div className={styles.track} ref={scrollRef} onScroll={onScroll}>
             {images.map((img, i) => (
               <div key={img.id} className={styles.slide}>
@@ -102,33 +113,35 @@ export function ListingGallery({ images, title, actions }: Props) {
           </div>
         )}
 
-        {!isMobile && images.length > 1 && (
-          <>
-            <button
-              type="button"
-              className={`${styles.navButton} ${styles.navPrev}`}
-              onClick={() => paginate(-1)}
-              aria-label="Предыдущее фото"
-            >
-              <Icon name="chevronLeft" size={20} />
-            </button>
-            <button
-              type="button"
-              className={`${styles.navButton} ${styles.navNext}`}
-              onClick={() => paginate(1)}
-              aria-label="Следующее фото"
-            >
-              <Icon name="chevronRight" size={20} />
-            </button>
-          </>
-        )}
+        <div className={styles.navButtons}>
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                className={`${styles.navButton} ${styles.navPrev}`}
+                onClick={() => paginate(-1)}
+                aria-label="Предыдущее фото"
+              >
+                <Icon name="chevronLeft" size={22} />
+              </button>
+              <button
+                type="button"
+                className={`${styles.navButton} ${styles.navNext}`}
+                onClick={() => paginate(1)}
+                aria-label="Следующее фото"
+              >
+                <Icon name="chevronRight" size={22} />
+              </button>
+            </>
+          )}
+        </div>
 
         {actions && <div className={styles.actions}>{actions}</div>}
       </div>
 
-      {!isMobile && images.length > 1 && (
-        <div className={styles.thumbs} ref={thumbsRef}>
-          {images.map((img, i) => (
+      <div className={styles.thumbs} ref={thumbsRef}>
+        {images.length > 1 &&
+          images.map((img, i) => (
             <button
               key={img.id}
               ref={(el) => {
@@ -150,8 +163,7 @@ export function ListingGallery({ images, title, actions }: Props) {
               )}
             </button>
           ))}
-        </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -61,7 +61,7 @@
 
 .title {
   margin: 0;
-  font-size: var(--fs-base);
+  font-size: var(--fs-main);
   font-weight: normal;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -75,8 +75,8 @@
 }
 
 .price {
-  font-size: var(--fs-base);
-  font-weight: var(--fw-md);
+  font-size: var(--fs-main);
+  font-weight: var(--fw);
   color: var(--fg);
 }
 

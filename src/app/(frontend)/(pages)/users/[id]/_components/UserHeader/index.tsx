@@ -1,0 +1,115 @@
+'use client'
+
+import { useState } from 'react'
+import { Avatar } from '@/components/Avatar'
+import Icon from '@/components/Icon'
+import styles from './index.module.css'
+
+type Props = {
+  name: string
+  phone: string | null
+  whatsapp: string | null
+  telegram: string | null
+  description: string | null
+  avatarUrl: string | null
+  createdAt: string
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso)
+  const day = d.getDate()
+  const month = d.toLocaleDateString('ru-RU', { month: 'short' })
+  const year = d.getFullYear()
+  return `${day} ${month} ${year}`
+}
+
+function getUrl(val: string, type: 'phone' | 'whatsapp' | 'telegram') {
+  if (val.startsWith('http') || val.startsWith('tel:')) return val
+  const clean = val.replace(/\D/g, '')
+  if (type === 'phone') return `tel:${val}`
+  if (type === 'whatsapp') return `https://wa.me/${clean || val.replace('@', '')}`
+  if (type === 'telegram') return `https://t.me/${val.replace('@', '')}`
+  return '#'
+}
+
+export function UserHeader({
+  name,
+  phone,
+  whatsapp,
+  telegram,
+  description,
+  avatarUrl,
+  createdAt,
+}: Props) {
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  return (
+    <div className={styles.header}>
+      <div className={styles.topRow}>
+        <div className={styles.avatarWrap}>
+          <Avatar src={avatarUrl} name={name} size={80} />
+        </div>
+
+        <div className={styles.info}>
+          <div className={styles.name}>{name}</div>
+          <div className={styles.date}>На Abkhaz Store с {formatDate(createdAt)}</div>
+        </div>
+      </div>
+
+      {(phone || whatsapp || telegram) && (
+        <div className={styles.contacts}>
+          {phone && (
+            <a
+              href={getUrl(phone, 'phone')}
+              className={styles.contactBtn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="phone" size={16} />
+              <span>{phone}</span>
+            </a>
+          )}
+          {whatsapp && (
+            <a
+              href={getUrl(whatsapp, 'whatsapp')}
+              className={styles.contactBtn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="whatsapp" size={16} />
+              <span>{whatsapp}</span>
+            </a>
+          )}
+          {telegram && (
+            <a
+              href={getUrl(telegram, 'telegram')}
+              className={styles.contactBtn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="telegram" size={16} />
+              <span>{telegram}</span>
+            </a>
+          )}
+        </div>
+      )}
+
+      {description && (
+        <div className={styles.descriptionWrap}>
+          <div className={`${styles.description} ${isExpanded ? styles.descriptionExpanded : ''}`}>
+            {description}
+          </div>
+          {!isExpanded && (
+            <button
+              type="button"
+              className={styles.descriptionToggle}
+              onClick={() => setIsExpanded(true)}
+            >
+              Читать полностью
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}

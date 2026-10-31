@@ -9,7 +9,7 @@
 
 .content {
   min-width: 0;
-  font-size: var(--fs-base);
+  font-size: var(--fs-main);
   line-height: 1.6;
 }
 
@@ -19,7 +19,7 @@
 .content h4,
 .content h5,
 .content h6 {
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
   color: var(--fg);
 }
 
@@ -82,7 +82,7 @@
 
 .contentFigure figcaption {
   margin-top: var(--sp-2);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
   text-align: center;
 }

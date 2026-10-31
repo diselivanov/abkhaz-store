@@ -3,6 +3,7 @@
   --fg-secondary: #4d4d4d;
   --bg: #ffffff;
   --bg-secondary: #f2f2f2;
+  --bg-tertiary: #e8e8e8;
 
   --btn: #2f2f32;
   --btn-hover: #39393c;
@@ -24,6 +25,7 @@
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 14px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   --control-h: 38px;
@@ -48,21 +50,18 @@
   --sp-6: 40px;
 
   --fs-xs: 12.5px;
-  --fs-control: 14px;
-  --fs-base: 15px;
+  --fs-main: 14px;
   --fs-lg: 20px;
   --fs-xl: 24px;
 
-  --fw-sm: 500;
-  --fw-md: 600;
+  --fw: 600;
 
   --transition: 0.1s;
 }
 
 @media (max-width: 768px) {
   :root {
-    --fs-base: 16px;
-    --fs-control: 16px;
+    --fs-main: 16px;
 
     --fs-lg: 18px;
     --fs-xl: 18px;

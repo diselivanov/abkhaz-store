@@ -12,5 +12,15 @@
   margin: 0;
   margin-bottom: var(--sp-1);
   font-size: var(--fs-lg);
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
+}
+
+@media (max-width: 768px) {
+  .form {
+    padding: var(--sp-4) var(--sp-2);
+  }
+
+  .title {
+    text-align: center;
+  }
 }

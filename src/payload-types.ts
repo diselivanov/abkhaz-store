@@ -142,8 +142,11 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name?: string | null;
+  description?: string | null;
   avatar?: (number | null) | Avatar;
   phone?: string | null;
+  whatsapp?: string | null;
+  telegram?: string | null;
   role: 'admin' | 'user';
   blockedAt?: string | null;
   updatedAt: string;
@@ -467,8 +470,11 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  description?: T;
   avatar?: T;
   phone?: T;
+  whatsapp?: T;
+  telegram?: T;
   role?: T;
   blockedAt?: T;
   updatedAt?: T;

@@ -9,6 +9,7 @@ import { Input } from '@/components/Input'
 import { Textarea } from '@/components/Textarea'
 import { Select } from '@/components/Select'
 import { Button } from '@/components/Button'
+import { ConfirmModal } from '@/components/ConfirmModal'
 import { useAlert } from '@/components/AlertProvider'
 import { getAttributeDef } from '@/lib/listings/attributeSchemas'
 import { listingBaseSchema } from '@/lib/listings/schemas'
@@ -62,6 +63,8 @@ export function ListingForm({
   const router = useRouter()
   const alert = useAlert()
   const [pending, startTransition] = useTransition()
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [pendingData, setPendingData] = useState<FormData | null>(null)
 
   const [images, setImages] = useState<ImageItem[]>(() =>
     initialImages
@@ -197,11 +200,21 @@ export function ListingForm({
     formData.set('existingImages', JSON.stringify(existingPayload))
     newFiles.forEach((f) => formData.append('images', f))
 
+    setPendingData(formData)
+    setConfirmOpen(true)
+  }
+
+  const onConfirmSubmit = () => {
+    if (!pendingData) return
+    const formData = pendingData
+
     startTransition(async () => {
       const result =
         mode === 'create'
           ? await createListingAction(formData)
           : await updateListingAction(adId!, formData)
+
+      setConfirmOpen(false)
 
       if (!result.ok) {
         alert.error(result.error)
@@ -215,88 +228,100 @@ export function ListingForm({
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-      <h1 className={styles.title}>
-        {mode === 'create' ? 'Новое объявление' : 'Редактирование объявления'}
-      </h1>
+    <>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+        <h1 className={styles.title}>
+          {mode === 'create' ? 'Новое объявление' : 'Редактирование объявления'}
+        </h1>
 
-      <Select
-        id="categorySlug"
-        label="Категория"
-        value={categorySlug}
-        onChange={(v) => setValue('categorySlug', v, { shouldValidate: true })}
-        options={categories.map((c) => ({ value: c.slug, label: c.title }))}
-        error={errors.categorySlug?.message}
-      />
-
-      <Select
-        id="subcategorySlug"
-        label="Подкатегория"
-        value={subcategorySlug}
-        onChange={(v) => setValue('subcategorySlug', v, { shouldValidate: true })}
-        options={filteredSubcategories.map((s) => ({ value: s.slug, label: s.title }))}
-        disabled={!categorySlug}
-        error={errors.subcategorySlug?.message}
-      />
-
-      <Select
-        id="citySlug"
-        label="Город"
-        value={citySlug}
-        onChange={(v) => setValue('citySlug', v, { shouldValidate: true })}
-        options={cities.map((c) => ({ value: c.slug, label: c.title }))}
-        error={errors.citySlug?.message}
-      />
-
-      <Input
-        id="title"
-        label="Название"
-        {...register('title')}
-        error={errors.title?.message}
-        maxLength={120}
-      />
-
-      <Textarea
-        id="description"
-        label="Описание"
-        rows={6}
-        {...register('description')}
-        error={errors.description?.message}
-        maxLength={5000}
-      />
-
-      <Input
-        id="price"
-        type="number"
-        label="Цена, ₽"
-        min={0}
-        step={1}
-        {...register('price')}
-        error={errors.price?.message as string | undefined}
-      />
-
-      {attributeDef && (
-        <AttributesFields
-          fields={attributeDef.fields}
-          register={(name) => register(name as never)}
-          errors={errors as never}
-          values={attributesValues}
-          setValue={(name, value) =>
-            setValue(name as never, value as never, { shouldValidate: true })
-          }
-          carBrandOptions={carBrandOptions}
-          carBrandLoading={carBrandLoading}
-          carModelOptions={carModelOptions}
-          carModelLoading={carModelLoading}
-          onBrandChange={handleBrandChange}
+        <Select
+          id="categorySlug"
+          label="Категория"
+          value={categorySlug}
+          onChange={(v) => setValue('categorySlug', v, { shouldValidate: true })}
+          options={categories.map((c) => ({ value: c.slug, label: c.title }))}
+          error={errors.categorySlug?.message}
         />
-      )}
 
-      <ImageUploader items={images} onChange={setImages} />
+        <Select
+          id="subcategorySlug"
+          label="Подкатегория"
+          value={subcategorySlug}
+          onChange={(v) => setValue('subcategorySlug', v, { shouldValidate: true })}
+          options={filteredSubcategories.map((s) => ({ value: s.slug, label: s.title }))}
+          disabled={!categorySlug}
+          error={errors.subcategorySlug?.message}
+        />
 
-      <Button type="submit" loading={pending} full>
-        {mode === 'create' ? 'Разместить объявление' : 'Сохранить изменения'}
-      </Button>
-    </form>
+        <Select
+          id="citySlug"
+          label="Город"
+          value={citySlug}
+          onChange={(v) => setValue('citySlug', v, { shouldValidate: true })}
+          options={cities.map((c) => ({ value: c.slug, label: c.title }))}
+          error={errors.citySlug?.message}
+        />
+
+        <Input
+          id="title"
+          label="Название"
+          {...register('title')}
+          error={errors.title?.message}
+          maxLength={120}
+        />
+
+        <Textarea
+          id="description"
+          label="Описание"
+          rows={6}
+          {...register('description')}
+          error={errors.description?.message}
+          maxLength={5000}
+        />
+
+        <Input
+          id="price"
+          type="number"
+          label="Цена, ₽"
+          min={0}
+          step={1}
+          {...register('price')}
+          error={errors.price?.message as string | undefined}
+        />
+
+        {attributeDef && (
+          <AttributesFields
+            fields={attributeDef.fields}
+            register={(name) => register(name as never)}
+            errors={errors as never}
+            values={attributesValues}
+            setValue={(name, value) =>
+              setValue(name as never, value as never, { shouldValidate: true })
+            }
+            carBrandOptions={carBrandOptions}
+            carBrandLoading={carBrandLoading}
+            carModelOptions={carModelOptions}
+            carModelLoading={carModelLoading}
+            onBrandChange={handleBrandChange}
+          />
+        )}
+
+        <ImageUploader items={images} onChange={setImages} />
+
+        <Button type="submit" loading={pending} full>
+          {mode === 'create' ? 'Разместить объявление' : 'Сохранить изменения'}
+        </Button>
+      </form>
+
+      <ConfirmModal
+        open={confirmOpen}
+        title="Размещение объявления"
+        description="После отправки объявление попадёт на модерацию и будет доступно в вашем профиле во вкладке «На проверке»."
+        confirmLabel="ОК"
+        onConfirm={onConfirmSubmit}
+        onCancel={() => setConfirmOpen(false)}
+        loading={pending}
+      />
+    </>
   )
 }

@@ -1,0 +1,163 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+}
+
+.topRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+}
+
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.name {
+  font-weight: var(--fw);
+  font-size: var(--fs-lg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.date {
+  font-size: var(--fs-xs);
+  color: var(--fg-secondary);
+}
+
+.contacts {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-width: 0;
+}
+
+.contactBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  color: var(--fg);
+  font-size: var(--fs-main);
+  text-decoration: none;
+  transition: background var(--transition) ease;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.contactBtn svg {
+  flex-shrink: 0;
+}
+
+.contactBtn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.contactBtn:hover {
+  background: var(--bg-tertiary);
+}
+
+.descriptionWrap {
+  position: relative;
+  width: 100%;
+  max-width: var(--form-w-sm);
+  text-align: center;
+}
+
+.description {
+  font-size: var(--fs-main);
+  color: var(--fg);
+  white-space: pre-wrap;
+  line-height: 1.5;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.descriptionExpanded {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.descriptionToggle {
+  display: inline-block;
+  padding: 0;
+  margin-top: var(--sp-1);
+  border: none;
+  background: transparent;
+  color: var(--fg-secondary);
+  font: inherit;
+  font-size: var(--fs-main);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .header {
+    align-items: stretch;
+    padding: var(--sp-3);
+  }
+
+  .topRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--sp-4);
+  }
+
+  .info {
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .name {
+    font-size: var(--fs-main);
+  }
+
+  .contacts {
+    justify-content: flex-start;
+    margin-top: var(--sp-2);
+  }
+
+  .contactBtn {
+    flex: 1 1 0%;
+    padding: var(--sp-1) var(--sp-2);
+  }
+
+  .descriptionWrap {
+    text-align: left;
+  }
+
+  .description {
+    text-align: left;
+    margin-top: var(--sp-2);
+  }
+}

@@ -37,7 +37,7 @@ export function SearchInput({ defaultValue, action, hiddenCategory }: Props) {
       />
       {value && (
         <button type="button" className={styles.searchClear} onClick={clear} aria-label="Очистить">
-          <Icon name="cross" size={22} />
+          <Icon name="cross" size={18} />
         </button>
       )}
       {hiddenCategory && <input type="hidden" name="category" value={hiddenCategory} />}

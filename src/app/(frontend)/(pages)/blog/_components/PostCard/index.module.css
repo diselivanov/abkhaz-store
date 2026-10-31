@@ -43,8 +43,8 @@
 }
 
 .title {
-  font-size: var(--fs-base);
-  font-weight: var(--fw-sm);
+  font-size: var(--fs-main);
+  font-weight: var(--fw);
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -55,7 +55,7 @@
 
 .excerpt {
   margin: 0;
-  font-size: var(--fs-base);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;

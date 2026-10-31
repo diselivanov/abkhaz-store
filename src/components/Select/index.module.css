@@ -21,7 +21,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font: inherit;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   background: var(--bg);
   color: var(--fg);
   cursor: pointer;
@@ -65,7 +65,7 @@
   left: var(--sp-3);
   top: 50%;
   transform: translateY(-50%);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
   pointer-events: none;
   background: var(--bg);
@@ -93,7 +93,7 @@
   color: var(--danger);
 }
 
-.dropdown {
+.dropdownWrap {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -102,12 +102,18 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  max-height: 280px;
+  max-height: 240px;
   overflow-y: auto;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--bg);
   box-shadow: var(--shadow-sm);
+}
+
+.dropdown {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .option {
@@ -117,13 +123,20 @@
   gap: var(--sp-2);
   height: var(--control-h);
   padding: 0 var(--sp-3);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg);
   cursor: pointer;
+  user-select: none;
 }
 
-.option:hover {
-  background: var(--bg-secondary);
+.option:active {
+  background: var(--bg-tertiary);
+}
+
+@media (hover: hover) {
+  .option:hover {
+    background: var(--bg-secondary);
+  }
 }
 
 .optionLabel {
@@ -135,4 +148,62 @@
 .optionCheck {
   color: var(--btn);
   flex-shrink: 0;
+}
+
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--overlay);
+}
+
+.drawerContent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2001;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  outline: none;
+  user-select: none;
+}
+
+.drawerTitle {
+  text-align: center;
+  padding: var(--sp-2) var(--sp-4) var(--sp-2);
+  font-size: var(--fs-main);
+  font-weight: var(--fw);
+  color: var(--fg);
+  user-select: none;
+}
+
+.drawerList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-2);
+  user-select: none;
+}
+
+.drawerList .dropdown {
+  max-height: none;
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.drawerList .option {
+  height: auto;
+  min-height: var(--control-h);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.drawerList .option:last-child {
+  border-bottom: none;
 }

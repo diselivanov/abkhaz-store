@@ -15,13 +15,13 @@
 .title {
   margin: 0 0 var(--sp-2);
   font-size: var(--fs-xl);
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
   text-align: center;
 }
 
 .hint {
   margin: var(--sp-2) 0 0;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
   text-align: center;
 }
@@ -33,4 +33,32 @@
 
 .hint a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .wrap {
+    padding: 0;
+    background: var(--bg-secondary);
+    min-height: calc(100% + var(--header-h) + env(safe-area-inset-bottom));
+    margin-bottom: calc(-1 * (var(--header-h) + env(safe-area-inset-bottom)));
+    align-items: center;
+  }
+
+  .form {
+    width: 100%;
+    max-width: 100%;
+    padding: var(--sp-5) var(--sp-4);
+    gap: var(--sp-4);
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+  }
+
+  .title {
+    font-size: var(--fs-lg);
+    margin: 0 0 var(--sp-1);
+  }
+
+  .hint {
+    margin: var(--sp-3) 0 0;
+  }
 }

@@ -46,7 +46,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: var(--sp-2);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--white);
 }
 

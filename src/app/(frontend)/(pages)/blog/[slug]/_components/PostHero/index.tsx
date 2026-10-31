@@ -62,7 +62,7 @@ export function PostHero({
         onClick={() => router.back()}
         aria-label="Назад"
       >
-        <Icon name="chevronLeft" size={24} />
+        <Icon name="chevronLeft" size={22} />
       </button>
 
       <div className={styles.actions}>

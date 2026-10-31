@@ -30,7 +30,7 @@
 
 .title {
   font-size: var(--fs-xl);
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
   margin: 0;
 }
 
@@ -45,7 +45,7 @@
 .categoryLink {
   display: flex;
   align-items: center;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   height: var(--control-h-sm);
   padding: 0 var(--sp-4);
   border-radius: var(--radius-full);

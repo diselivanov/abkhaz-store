@@ -17,7 +17,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font: inherit;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   background: var(--bg);
   color: var(--fg);
   resize: vertical;
@@ -31,7 +31,7 @@
   position: absolute;
   left: var(--sp-3);
   top: var(--sp-3);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
   pointer-events: none;
   background: var(--bg);

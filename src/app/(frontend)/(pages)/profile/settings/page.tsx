@@ -4,9 +4,10 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { Media } from '@/payload-types'
-import { ProfileSettingsForm } from './ProfileSettingsForm'
-import { AvatarUploader } from '../AvatarUploader'
-import { LogoutButton } from './LogoutButton'
+import { ProfileSettingsForm } from '../_components/ProfileSettingsForm'
+import { AvatarUploader } from '../_components/AvatarUploader'
+import { LogoutButton } from '../_components/LogoutButton'
+import { SettingsHeader } from '../_components/SettingsHeader'
 import styles from './index.module.css'
 
 export const metadata: Metadata = {
@@ -24,10 +25,20 @@ export default async function ProfileSettingsPage() {
   const avatarUrl = typeof user.avatar === 'object' ? ((user.avatar as Media)?.url ?? null) : null
 
   return (
-    <div className={styles.wrapper}>
-      <AvatarUploader src={avatarUrl} name={user.name || user.email} />
-      <ProfileSettingsForm initialName={user.name || ''} initialPhone={user.phone || ''} />
-      <LogoutButton full />
-    </div>
+    <>
+      <SettingsHeader />
+      <div className={styles.wrapper}>
+        <h1 className={styles.title}>Настройки</h1>
+        <AvatarUploader src={avatarUrl} name={user.name || user.email} />
+        <ProfileSettingsForm
+          initialName={user.name || ''}
+          initialPhone={user.phone || ''}
+          initialWhatsapp={user.whatsapp || ''}
+          initialTelegram={user.telegram || ''}
+          initialDescription={user.description || ''}
+        />
+        <LogoutButton full />
+      </div>
+    </>
   )
 }

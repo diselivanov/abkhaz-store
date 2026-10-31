@@ -23,13 +23,13 @@
 
 .title {
   margin: 0;
-  font-size: var(--fs-base);
-  font-weight: var(--fw-sm);
+  font-size: var(--fs-main);
+  font-weight: var(--fw);
 }
 
 .description {
   margin: 0;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
 }
 

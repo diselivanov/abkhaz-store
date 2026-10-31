@@ -4,8 +4,8 @@ import { notFound, redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { ListingImage, Media } from '@/payload-types'
-import { UserSidebar } from './UserSidebar'
-import { UserListingsTabs } from './UserListingsTabs'
+import { UserHeader } from './_components/UserHeader'
+import { UserListingsTabs } from './_components/UserListingsTabs'
 import styles from './index.module.css'
 
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
@@ -91,16 +91,17 @@ export default async function UserProfilePage({ params }: Props) {
   const listings = docs.map((d) => ({ ...d, images: imagesByAd.get(d.id) || [] }))
 
   return (
-    <div className={styles.layout}>
-      <UserSidebar
+    <div className={styles.root}>
+      <UserHeader
         name={user.name || 'Пользователь'}
         phone={user.phone || null}
+        whatsapp={user.whatsapp || null}
+        telegram={user.telegram || null}
+        description={user.description || null}
         avatarUrl={avatarUrl}
         createdAt={user.createdAt}
       />
-      <div className={styles.content}>
-        <UserListingsTabs listings={listings} />
-      </div>
+      <UserListingsTabs listings={listings} />
     </div>
   )
 }

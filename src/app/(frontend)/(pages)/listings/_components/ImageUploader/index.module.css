@@ -15,7 +15,7 @@
   margin: 0;
   margin-bottom: var(--sp-1);
   font-size: var(--fs-lg);
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
 }
 
 .scrollWrap {
@@ -114,4 +114,27 @@
 .error {
   font-size: var(--fs-xs);
   color: var(--danger);
+}
+
+@media (max-width: 768px) {
+  .title {
+    text-align: center;
+  }
+
+  .item {
+    width: 90px;
+    height: 90px;
+  }
+
+  .addTile {
+    width: 90px;
+    height: 90px;
+  }
+
+  .badge {
+    left: var(--sp-1);
+    right: var(--sp-1);
+    bottom: var(--sp-1);
+    text-align: center;
+  }
 }

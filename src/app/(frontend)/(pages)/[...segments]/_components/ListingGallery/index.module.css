@@ -36,6 +36,10 @@
   display: block;
 }
 
+.mobileBack {
+  display: none;
+}
+
 .navButton {
   position: absolute;
   top: 50%;
@@ -117,6 +121,24 @@
     touch-action: pan-y;
   }
 
+  .mobileBack {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: var(--sp-2);
+    left: var(--sp-2);
+    z-index: 10;
+    width: var(--control-h);
+    height: var(--control-h);
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-full);
+    background: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+  }
+
   .track {
     display: flex;
     width: 100%;
@@ -138,7 +160,15 @@
   }
 
   .slider {
-    display: none;
+    display: none !important;
+  }
+
+  .thumbs {
+    display: none !important;
+  }
+
+  .navButton {
+    display: none !important;
   }
 
   .actions {

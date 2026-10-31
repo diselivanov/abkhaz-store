@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import Icon, { type IconName } from '@/components/Icon'
 import styles from './index.module.css'
 
@@ -25,6 +26,13 @@ const CATEGORY_ICONS: Record<string, IconName> = {
   'hobbi-i-otdyh': 'hobby',
   'biznes-i-oborudovanie': 'business',
 }
+
+const MOBILE_LINKS = [
+  { label: 'Разместить объявление', href: '/listings/new' },
+  { label: 'Помощь', href: '/' },
+  { label: 'Контакты', href: '/' },
+  { label: 'Блог о Абхазии', href: '/blog' },
+]
 
 type Props = {
   open: boolean
@@ -84,7 +92,7 @@ export function CategoriesModal({ open, categories, onClose, onSelect }: Props) 
                 onClick={() => setMobileSubcategoryOpen(false)}
                 aria-label="Назад"
               >
-                <Icon name="chevronLeft" size={20} />
+                <Icon name="chevronLeft" size={22} />
               </button>
               <span className={styles.mobileTitle}>Подкатегория</span>
               <button
@@ -93,7 +101,7 @@ export function CategoriesModal({ open, categories, onClose, onSelect }: Props) 
                 onClick={onClose}
                 aria-label="Закрыть"
               >
-                <Icon name="cross" size={20} />
+                <Icon name="cross" size={18} />
               </button>
             </div>
             <ul className={styles.mobileSubs}>
@@ -115,36 +123,49 @@ export function CategoriesModal({ open, categories, onClose, onSelect }: Props) 
         ) : (
           <div className={styles.mobilePanel}>
             <div className={styles.mobileHeader}>
-              <span className={styles.mobileSpacer} />
-              <span className={styles.mobileTitle}>Категории</span>
+              <span className={styles.mobileBrand}>Abkhaz Store</span>
               <button
                 type="button"
                 className={styles.mobileClose}
                 onClick={onClose}
                 aria-label="Закрыть"
               >
-                <Icon name="cross" size={20} />
+                <Icon name="cross" size={18} />
               </button>
             </div>
-            <ul className={styles.mobileSubs}>
-              {categories.map((cat) => (
-                <li
-                  key={cat.id}
-                  className={styles.mobileSubItem}
-                  onClick={() => onCategoryClick(cat)}
-                >
-                  <span className={styles.mobileSubLeft}>
-                    <Icon
-                      name={CATEGORY_ICONS[cat.slug] || 'layoutGrid'}
-                      size={20}
-                      className={styles.catIcon}
-                    />
-                    <span>{cat.title}</span>
-                  </span>
-                  <Icon name="chevronRight" size={16} className={styles.catArrow} />
-                </li>
-              ))}
-            </ul>
+            <div className={styles.mobileScroll}>
+              <nav className={styles.mobileLinks}>
+                {MOBILE_LINKS.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={styles.mobileLink}
+                    onClick={onClose}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+              <ul className={styles.mobileSubs}>
+                {categories.map((cat) => (
+                  <li
+                    key={cat.id}
+                    className={styles.mobileSubItem}
+                    onClick={() => onCategoryClick(cat)}
+                  >
+                    <span className={styles.mobileSubLeft}>
+                      <Icon
+                        name={CATEGORY_ICONS[cat.slug] || 'layoutGrid'}
+                        size={20}
+                        className={styles.catIcon}
+                      />
+                      <span>{cat.title}</span>
+                    </span>
+                    <Icon name="chevronRight" size={16} className={styles.catArrow} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
 

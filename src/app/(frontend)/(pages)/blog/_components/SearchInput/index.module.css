@@ -20,7 +20,7 @@
   border: none;
   border-radius: var(--radius-full);
   font: inherit;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   background: var(--bg-secondary);
   color: var(--fg);
   -webkit-appearance: none;

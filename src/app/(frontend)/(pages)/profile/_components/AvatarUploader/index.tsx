@@ -1,11 +1,11 @@
 'use client'
 
-import { useRef, useState, useTransition } from 'react'
+import { useRef, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Avatar } from '@/components/Avatar'
 import { useAlert } from '@/components/AlertProvider'
 import { uploadAvatarAction } from '@/lib/auth/actions'
-import styles from './AvatarUploader.module.css'
+import styles from './index.module.css'
 
 type Props = {
   src: string | null
@@ -46,7 +46,7 @@ export function AvatarUploader({ src, name }: Props) {
         disabled={pending}
         aria-label="Загрузить аватар"
       >
-        <Avatar src={src} name={name} size={74} />
+        <Avatar src={src} name={name} size={80} />
         {pending && <span className={styles.avatarOverlay} />}
       </button>
 

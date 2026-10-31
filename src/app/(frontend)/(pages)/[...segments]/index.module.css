@@ -9,7 +9,7 @@
 .heading {
   margin: 0;
   font-size: var(--fs-xl);
-  font-weight: var(--fw-sm);
+  font-weight: var(--fw);
 }
 
 .detail {
@@ -51,7 +51,7 @@
 
 @media (max-width: 768px) {
   .root {
-    padding: var(--sp-3);
+    padding: var(--sp-2);
     gap: var(--sp-2);
   }
 
@@ -60,7 +60,7 @@
   }
 
   .detail {
-    padding: 0 var(--sp-2);
+    padding: 0;
     gap: var(--sp-2);
   }
 

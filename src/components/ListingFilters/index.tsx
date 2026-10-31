@@ -1,14 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { createPortal } from 'react-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Icon from '@/components/Icon'
-import { FilterSelect } from '@/components/FilterSelect'
 import { Button } from '@/components/Button'
+import { Select } from '@/components/Select'
 import type { CategoryNode } from '@/components/CategoriesModal'
 import { CategoriesModal } from '@/components/CategoriesModal'
-import { getAttributeDef } from '@/lib/listings/attributeSchemas'
 import { AttributesFilter } from '@/components/AttributesFilter'
+import { getAttributeDef } from '@/lib/listings/attributeSchemas'
+import type { FieldMeta } from '@/lib/listings/attributeSchemas'
 import styles from './index.module.css'
 
 type CityOption = { id: number; title: string; slug: string }
@@ -29,22 +32,7 @@ const SORT_OPTIONS = [
   { value: 'price_desc', label: 'Дороже' },
 ]
 
-const PLACEHOLDERS = [
-  'Снять квартиру посуточно',
-  'BMW M5 F90',
-  'iPhone 15 128 ГБ',
-  'Купить квартиру',
-  'Работа в офисе',
-  'Аренда авто',
-  'Дом у моря',
-  'Toyota Camry',
-  'Ноутбук для работы',
-  'Экскурсии в Абхазии',
-  'Ремонт квартиры',
-  'Mercedes-Benz E-Class',
-  'Посуточная аренда',
-  'Детская коляска',
-]
+const PLACEHOLDER = 'Искать на Abkhaz Store'
 
 export function ListingFilters({
   cities,
@@ -52,90 +40,109 @@ export function ListingFilters({
   currentCity = '',
   currentCategory = '',
   currentSubcategory = '',
-  isAuthenticated = false,
   children,
 }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [categoriesOpen, setCategoriesOpen] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const [searchValue, setSearchValue] = useState(searchParams.get('q') || '')
+  const reduce = useReducedMotion()
 
-  const [focused, setFocused] = useState(false)
-  const [placeholderIdx, setPlaceholderIdx] = useState(0)
-  const [placeholderText, setPlaceholderText] = useState('')
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [draftCity, setDraftCity] = useState(currentCity || 'all')
+  const [draftSort, setDraftSort] = useState(searchParams.get('sort') || 'new')
+  const [draftAttrs, setDraftAttrs] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    setMounted(true)
+    const mq = window.matchMedia('(max-width: 768px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   useEffect(() => {
     setSearchValue(searchParams.get('q') || '')
   }, [searchParams])
 
-  useEffect(() => {
-    if (searchValue || focused) return
+  const attributeDef: { fields: Record<string, FieldMeta> } | null = useMemo(
+    () =>
+      currentCategory && currentSubcategory
+        ? getAttributeDef(currentCategory, currentSubcategory)
+        : null,
+    [currentCategory, currentSubcategory],
+  )
 
-    const current = PLACEHOLDERS[placeholderIdx]
-    let timeoutId: ReturnType<typeof setTimeout>
-
-    if (!isDeleting && placeholderText === current) {
-      timeoutId = setTimeout(() => setIsDeleting(true), 2000)
-    } else if (isDeleting && placeholderText === '') {
-      setIsDeleting(false)
-      setPlaceholderIdx((prev) => (prev + 1) % PLACEHOLDERS.length)
-    } else {
-      timeoutId = setTimeout(
-        () => {
-          setPlaceholderText((prev) =>
-            isDeleting ? prev.slice(0, -1) : current.slice(0, prev.length + 1),
-          )
-        },
-        isDeleting ? 30 : 70,
-      )
-    }
-
-    return () => clearTimeout(timeoutId)
-  }, [placeholderText, isDeleting, placeholderIdx, searchValue, focused])
-
-  const cityOptions = [
-    { value: 'all', label: 'Все' },
-    ...cities.map((c) => ({ value: c.slug, label: c.title })),
-  ]
-
-  const attributeDef =
-    currentCategory && currentSubcategory
-      ? getAttributeDef(currentCategory, currentSubcategory)
-      : null
-
-  const attributeValues: Record<string, string> = {}
-  if (attributeDef) {
+  const attributeValues: Record<string, string> = useMemo(() => {
+    if (!attributeDef) return {}
+    const values: Record<string, string> = {}
     for (const key of Object.keys(attributeDef.fields)) {
       const v = searchParams.get(key)
-      if (v) attributeValues[key] = v
+      if (v) values[key] = v
     }
-  }
+    return values
+  }, [attributeDef, searchParams])
 
-  const updateQuery = (updates: Record<string, string | undefined>) => {
-    const params = new URLSearchParams(searchParams.toString())
+  useEffect(() => {
+    if (!filtersOpen) return
+    setDraftCity(currentCity || 'all')
+    setDraftSort(searchParams.get('sort') || 'new')
+    setDraftAttrs(attributeValues)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersOpen])
 
-    if (updates.brand !== undefined && updates.brand !== searchParams.get('brand')) {
-      params.delete('model')
+  useEffect(() => {
+    if (!filtersOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setFiltersOpen(false)
     }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [filtersOpen])
 
-    for (const [k, v] of Object.entries(updates)) {
-      if (v) params.set(k, v)
-      else params.delete(k)
+  const cityOptions = useMemo(
+    () => [
+      { value: 'all', label: 'Все города' },
+      ...cities.map((c) => ({ value: c.slug, label: c.title })),
+    ],
+    [cities],
+  )
+
+  const buildPath = (
+    city: string,
+    category = currentCategory,
+    subcategory = currentSubcategory,
+  ) => {
+    if (!city || city === 'all') {
+      if (category && subcategory) return `/${category}/${subcategory}`
+      if (category) return `/${category}`
+      return '/'
     }
-    const qs = params.toString()
-    router.push(qs ? `${pathname}?${qs}` : pathname)
+    if (category && subcategory) return `/${city}/${category}/${subcategory}`
+    if (category) return `/${city}/${category}`
+    return `/${city}`
   }
 
   const onSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    updateQuery({ q: searchValue.trim() || undefined })
+    const params = new URLSearchParams(searchParams.toString())
+    const q = searchValue.trim()
+    if (q) params.set('q', q)
+    else params.delete('q')
+    const qs = params.toString()
+    router.push(qs ? `${pathname}?${qs}` : pathname)
   }
 
   const onSearchClear = () => {
     setSearchValue('')
-    updateQuery({ q: undefined })
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete('q')
+    const qs = params.toString()
+    router.push(qs ? `${pathname}?${qs}` : pathname)
   }
 
   const onCategorySelect = (categorySlug: string, subcategorySlug: string) => {
@@ -147,71 +154,138 @@ export function ListingFilters({
     }
   }
 
-  const onCityChange = (citySlug: string) => {
-    if (!citySlug || citySlug === 'all') {
-      if (currentCategory && currentSubcategory) {
-        router.push(`/${currentCategory}/${currentSubcategory}`)
-      } else if (currentCategory) {
-        router.push(`/${currentCategory}`)
-      } else {
-        router.push('/')
-      }
-      return
+  const hasAnyDraftFilter =
+    (draftCity && draftCity !== 'all') ||
+    draftSort !== 'new' ||
+    Object.values(draftAttrs).some(Boolean)
+
+  const onResetDraft = () => {
+    setDraftCity('all')
+    setDraftSort('new')
+    setDraftAttrs({})
+
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete('sort')
+    if (attributeDef) {
+      for (const key of Object.keys(attributeDef.fields)) params.delete(key)
     }
 
-    if (currentCategory && currentSubcategory) {
-      router.push(`/${citySlug}/${currentCategory}/${currentSubcategory}`)
-    } else if (currentCategory) {
-      router.push(`/${citySlug}/${currentCategory}`)
-    } else {
-      router.push(`/${citySlug}`)
+    const cityChanged = (currentCity || 'all') !== 'all'
+    const targetPath = cityChanged ? buildPath('all') : pathname
+
+    const qs = params.toString()
+    setFiltersOpen(false)
+    router.push(qs ? `${targetPath}?${qs}` : targetPath)
+  }
+
+  const onApplyFilters = () => {
+    const cityChanged = draftCity !== (currentCity || 'all')
+    const targetPath = cityChanged ? buildPath(draftCity) : pathname
+
+    const params = new URLSearchParams(searchParams.toString())
+    if (draftSort && draftSort !== 'new') params.set('sort', draftSort)
+    else params.delete('sort')
+
+    if (attributeDef) {
+      for (const key of Object.keys(attributeDef.fields)) params.delete(key)
     }
+    for (const [k, v] of Object.entries(draftAttrs)) {
+      if (v) params.set(k, v)
+    }
+
+    const qs = params.toString()
+    setFiltersOpen(false)
+    router.push(qs ? `${targetPath}?${qs}` : targetPath)
   }
 
-  const onReset = () => {
-    setSearchValue('')
-    router.push(pathname)
-  }
+  const filtersModal = mounted ? (
+    <AnimatePresence>
+      {filtersOpen && (
+        <>
+          <motion.div
+            className={styles.modalOverlay}
+            onClick={() => setFiltersOpen(false)}
+            initial={isMobile || reduce ? false : { opacity: 0 }}
+            animate={reduce ? undefined : { opacity: 1 }}
+            exit={isMobile || reduce ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+          />
+          <motion.div
+            className={styles.modalRoot}
+            initial={isMobile || reduce ? false : { opacity: 0, scale: 0.96 }}
+            animate={reduce ? undefined : { opacity: 1, scale: 1 }}
+            exit={isMobile || reduce ? undefined : { opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+          >
+            <div className={styles.modalPanel}>
+              <div className={styles.modalHeader}>
+                <button
+                  type="button"
+                  className={styles.modalClose}
+                  onClick={() => setFiltersOpen(false)}
+                  aria-label="Закрыть"
+                >
+                  <Icon name="cross" size={18} />
+                </button>
+                <span className={styles.modalTitle}>Фильтры</span>
+                {hasAnyDraftFilter ? (
+                  <button type="button" className={styles.modalReset} onClick={onResetDraft}>
+                    Сбросить
+                  </button>
+                ) : (
+                  <span className={styles.modalSpacer} />
+                )}
+              </div>
 
-  const hasAnyFilter = Array.from(searchParams.keys()).length > 0
+              <div className={styles.modalBody}>
+                <Select
+                  id="modal-filter-city"
+                  value={draftCity}
+                  onChange={setDraftCity}
+                  options={cityOptions}
+                  label="Город"
+                />
+
+                <Select
+                  id="modal-filter-sort"
+                  value={draftSort}
+                  onChange={setDraftSort}
+                  options={SORT_OPTIONS}
+                  label="Сортировка"
+                />
+
+                {attributeDef && (
+                  <AttributesFilter
+                    fields={attributeDef.fields}
+                    values={draftAttrs}
+                    onChange={(key, value) =>
+                      setDraftAttrs((prev) => {
+                        const next = { ...prev, [key]: value }
+                        if (key === 'brand') next.model = ''
+                        return next
+                      })
+                    }
+                    categorySlug={currentCategory}
+                    subcategorySlug={currentSubcategory}
+                  />
+                )}
+              </div>
+
+              <div className={styles.modalFooter}>
+                <Button variant="primary" size="md" full onClick={onApplyFilters}>
+                  Показать результаты
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  ) : null
 
   return (
     <>
       <div className={styles.layout}>
-        <aside className={styles.sidebar}>
-          <FilterSelect
-            id="filter-city"
-            value={currentCity || 'all'}
-            onChange={onCityChange}
-            options={cityOptions}
-            placeholder="Город"
-          />
-
-          <FilterSelect
-            id="filter-sort"
-            value={searchParams.get('sort') || 'new'}
-            onChange={(v) => updateQuery({ sort: v === 'new' ? undefined : v })}
-            options={SORT_OPTIONS}
-            placeholder="Сортировка"
-          />
-
-          {attributeDef && (
-            <AttributesFilter
-              fields={attributeDef.fields}
-              values={attributeValues}
-              onChange={(key, value) => updateQuery({ [key]: value || undefined })}
-              categorySlug={currentCategory}
-              subcategorySlug={currentSubcategory}
-            />
-          )}
-
-          {hasAnyFilter && (
-            <Button variant="ghost" size="sm" round onClick={onReset} full>
-              Сбросить
-            </Button>
-          )}
-        </aside>
-
         <div className={styles.content}>
           <div className={styles.searchRow}>
             <Button
@@ -219,41 +293,47 @@ export function ListingFilters({
               size="md"
               round
               onClick={() => setCategoriesOpen((v) => !v)}
-              className={styles.categoriesButton}
+              className={`${styles.categoriesButton}`}
+              aria-label="Категории"
             >
-              <Icon name="layoutGrid" size={18} />
-              <span>Категории</span>
+              <Icon name="layoutGrid" size={20} />
+              Категории
             </Button>
 
-            <form className={styles.search} onSubmit={onSearchSubmit}>
-              <Icon name="search" size={18} className={styles.searchIcon} />
+            <div className={styles.searchAndFilter}>
+              <form className={styles.search} onSubmit={onSearchSubmit}>
+                <Icon name="search" size={18} className={styles.searchIcon} />
 
-              {searchValue === '' && !focused && (
-                <div className={styles.typedPlaceholder} aria-hidden="true">
-                  <span>{placeholderText}</span>
-                  <span className={styles.typedCaret} />
+                <input
+                  type="text"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder={PLACEHOLDER}
+                  className={styles.searchInput}
+                />
+
+                <div className={styles.searchActions}>
+                  {searchValue && (
+                    <button
+                      type="button"
+                      className={styles.searchClear}
+                      onClick={onSearchClear}
+                      aria-label="Очистить"
+                    >
+                      <Icon name="cross" size={18} />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className={styles.searchFilter}
+                    onClick={() => setFiltersOpen(true)}
+                    aria-label="Фильтры"
+                  >
+                    <Icon name="filter" size={20} />
+                  </button>
                 </div>
-              )}
-
-              <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                className={styles.searchInput}
-              />
-              {searchValue && (
-                <button
-                  type="button"
-                  className={styles.searchClear}
-                  onClick={onSearchClear}
-                  aria-label="Очистить"
-                >
-                  <Icon name="cross" size={22} />
-                </button>
-              )}
-            </form>
+              </form>
+            </div>
 
             <Button
               variant="primary"
@@ -264,6 +344,15 @@ export function ListingFilters({
             >
               Разместить объявление
             </Button>
+
+            <button
+              type="button"
+              onClick={() => setCategoriesOpen(true)}
+              className={styles.mobileCategoriesButton}
+              aria-label="Категории"
+            >
+              <Icon name="menu" size={24} />
+            </button>
           </div>
 
           {children}
@@ -276,6 +365,8 @@ export function ListingFilters({
         onClose={() => setCategoriesOpen(false)}
         onSelect={onCategorySelect}
       />
+
+      {mounted && createPortal(filtersModal, document.body)}
     </>
   )
 }

@@ -43,6 +43,11 @@ export const Users: CollectionConfig = {
       label: 'Отображаемое имя',
     },
     {
+      name: 'description',
+      type: 'textarea',
+      label: 'Описание',
+    },
+    {
       name: 'avatar',
       type: 'upload',
       relationTo: 'avatars',
@@ -52,7 +57,16 @@ export const Users: CollectionConfig = {
       name: 'phone',
       type: 'text',
       label: 'Телефон',
-      admin: { placeholder: '+7 900 000-00-00' },
+    },
+    {
+      name: 'whatsapp',
+      type: 'text',
+      label: 'WhatsApp',
+    },
+    {
+      name: 'telegram',
+      type: 'text',
+      label: 'Telegram',
     },
     {
       name: 'role',

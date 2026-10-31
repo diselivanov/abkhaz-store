@@ -3,19 +3,23 @@
 import { useState } from 'react'
 import type { ListingWithImages } from '@/lib/listings/queries'
 import { ListingCard } from '@/components/ListingCard'
-import styles from './UserListingsTabs.module.css'
+import Icon, { type IconName } from '@/components/Icon'
+import styles from './index.module.css'
 
 type Props = {
   listings: ListingWithImages[]
 }
 
-const TABS = [
-  { key: 'active', label: 'Активные' },
-  { key: 'completed', label: 'Завершённые' },
-] as const
+const TABS: { key: 'active' | 'completed' | 'pending'; icon: IconName; label: string }[] = [
+  { key: 'active', icon: 'circleCheck', label: 'Активные' },
+  { key: 'completed', icon: 'circleX', label: 'Завершённые' },
+  { key: 'pending', icon: 'clock', label: 'На проверке' },
+]
 
-export function UserListingsTabs({ listings }: Props) {
-  const [tab, setTab] = useState<'active' | 'completed'>('active')
+type TabKey = (typeof TABS)[number]['key']
+
+export function MyListingsTabs({ listings }: Props) {
+  const [tab, setTab] = useState<TabKey>('active')
 
   const filtered = listings.filter((l) => l.status === tab)
 
@@ -28,8 +32,11 @@ export function UserListingsTabs({ listings }: Props) {
             type="button"
             className={`${styles.tab} ${tab === t.key ? styles.tabActive : ''}`}
             onClick={() => setTab(t.key)}
+            aria-label={t.label}
+            title={t.label}
           >
-            {t.label}
+            <span className={styles.tabDesktop}>{t.label}</span>
+            <Icon name={t.icon} size={20} className={styles.tabMobile} />
           </button>
         ))}
       </div>

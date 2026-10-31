@@ -10,3 +10,9 @@
   overflow-y: auto;
   scroll-behavior: smooth;
 }
+
+@media (max-width: 768px) {
+  .main {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+}

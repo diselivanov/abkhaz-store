@@ -27,7 +27,7 @@ export function LogoutButton({ full = false }: Props) {
   return (
     <>
       <Button variant="ghost" size="md" full={full} onClick={() => setOpen(true)}>
-        Выйти
+        Выйти из аккаунта
       </Button>
       <ConfirmModal
         open={open}

@@ -30,7 +30,7 @@
   background: var(--bg);
   color: var(--fg);
   font: inherit;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;

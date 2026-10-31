@@ -6,20 +6,24 @@
 
 .tabs {
   display: flex;
-  gap: var(--sp-2);
 }
 
 .tab {
   height: var(--control-h);
-  padding: 0 var(--sp-4);
+  padding: 0 var(--sp-3);
   border: none;
   background: transparent;
   color: var(--fg-secondary);
   font: inherit;
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tab:hover {
@@ -29,7 +33,10 @@
 .tabActive {
   color: var(--fg);
   border-bottom-color: var(--btn);
-  font-weight: var(--fw-sm);
+}
+
+.tabMobile {
+  display: none;
 }
 
 .empty {
@@ -45,8 +52,38 @@
 }
 
 @media (max-width: 768px) {
+  .root {
+    gap: 0;
+  }
+
+  .tabs {
+    justify-content: space-between;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    margin-bottom: 0;
+    flex: 1;
+  }
+
+  .tabDesktop {
+    display: none;
+  }
+
+  .tabMobile {
+    display: inline-block;
+  }
+
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--sp-2);
+    padding: var(--sp-2);
   }
 }

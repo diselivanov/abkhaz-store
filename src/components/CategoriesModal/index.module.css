@@ -23,6 +23,7 @@
   display: flex;
   flex-direction: column;
   z-index: 1;
+  user-select: none;
 }
 
 .columns {
@@ -49,7 +50,7 @@
   padding: 0 var(--sp-3);
   cursor: default;
   border-radius: var(--radius-sm);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg);
 }
 
@@ -95,7 +96,7 @@
   padding: 0 var(--sp-3);
   cursor: pointer;
   border-radius: var(--radius-sm);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg);
 }
 
@@ -106,7 +107,7 @@
 .empty {
   padding: var(--sp-3);
   color: var(--fg-secondary);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
 }
 
 .mobilePanel {
@@ -141,11 +142,20 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--sp-2);
-    height: var(--header-h);
-    padding-top: env(safe-area-inset-top);
-    padding: 0 var(--sp-4);
+    padding: var(--sp-2) var(--sp-4);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
+  }
+
+  .mobileBrand {
+    font-size: var(--fs-main);
+    font-weight: var(--fw);
+    color: var(--fg);
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mobileBack {
@@ -156,11 +166,11 @@
     height: var(--control-h-sm);
     margin-left: calc(var(--sp-2) * -1);
     padding: 0;
-    border: none;
+    border: 1px solid var(--border);
     background: transparent;
     color: var(--fg);
     cursor: pointer;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full);
   }
 
   .mobileBack:active {
@@ -175,11 +185,12 @@
     height: var(--control-h-sm);
     margin-right: calc(var(--sp-2) * -1);
     padding: 0;
-    border: none;
+    border: 1px solid var(--border);
     background: transparent;
     color: var(--fg);
     cursor: pointer;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
   }
 
   .mobileClose:active {
@@ -192,8 +203,8 @@
   }
 
   .mobileTitle {
-    font-size: var(--fs-control);
-    font-weight: var(--fw-sm);
+    font-size: var(--fs-main);
+    font-weight: var(--fw);
     color: var(--fg);
     text-align: center;
     flex: 1;
@@ -202,13 +213,38 @@
     white-space: nowrap;
   }
 
+  .mobileScroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .mobileLinks {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobileLink {
+    display: flex;
+    align-items: center;
+    min-height: var(--control-h);
+    padding: var(--sp-2) var(--sp-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-main);
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .mobileLink:active {
+    background: var(--bg-secondary);
+  }
+
   .mobileSubs {
     list-style: none;
     margin: 0;
     padding: var(--sp-2);
-    overflow-y: auto;
-    flex: 1;
-    min-height: 0;
   }
 
   .mobileSubItem {
@@ -219,7 +255,7 @@
     min-height: var(--control-h);
     padding: var(--sp-2) var(--sp-3);
     border-radius: var(--radius-sm);
-    font-size: var(--fs-base);
+    font-size: var(--fs-main);
     color: var(--fg);
     cursor: pointer;
   }

@@ -143,7 +143,15 @@ export function ListingActions({ adId, status, editHref }: Props) {
             <Drawer.Portal>
               <Drawer.Overlay className={styles.drawerOverlay} />
               <Drawer.Content className={styles.drawerContent}>
-                <Drawer.Handle className={styles.drawerHandle} />
+                <Drawer.Handle
+                  style={{
+                    width: 30,
+                    height: 2,
+                    margin: 'var(--sp-2) auto 0',
+                    background: 'var(--fg-secondary)',
+                    borderRadius: 9999,
+                  }}
+                />
                 <div className={styles.drawerTitle}>Действия</div>
                 <div className={styles.drawerList}>{items}</div>
               </Drawer.Content>

@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--sp-1);
-  font-size: var(--fs-control);
+  font-size: var(--fs-main);
   color: var(--fg-secondary);
 }
 
