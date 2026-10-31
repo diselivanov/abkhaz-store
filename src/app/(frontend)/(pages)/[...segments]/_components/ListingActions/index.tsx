@@ -166,7 +166,7 @@ export function ListingActions({ adId, status, editHref }: Props) {
         description={
           status === 'active'
             ? 'Объявление будет скрыто из поиска.'
-            : 'Объявление снова будет отображаться в поиске.'
+            : 'Объявление снова появится в поиске.'
         }
         confirmLabel={toggleLabel}
         onConfirm={onConfirm}

@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-full);
-  background: var(--blue-10);
+  background: var(--bg-tertiary);
   color: var(--btn);
   font-weight: var(--fw);
   user-select: none;

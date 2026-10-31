@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Avatar } from '@/components/Avatar'
 import { LinkButton } from '@/components/LinkButton'
+import styles from './index.module.css'
 
 type Me = {
   id: number
@@ -56,7 +57,9 @@ export function AuthActions() {
   return (
     <>
       <Link href="/profile" aria-label="Профиль">
-        <Avatar src={me.avatarUrl} name={me.name || me.email} size={34} />
+        <div className={styles.ava}>
+          <Avatar src={me.avatarUrl} name={me.name || me.email} size={30} />
+        </div>
       </Link>
     </>
   )

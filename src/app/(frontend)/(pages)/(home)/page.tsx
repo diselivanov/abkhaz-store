@@ -1,24 +1,51 @@
 import type { Metadata } from 'next'
 import { headers as nextHeaders } from 'next/headers'
 import { getPayload } from 'payload'
+import Link from 'next/link'
 import config from '@/payload.config'
 import { buildListingsWhere, getListingsSort, type ListingSort } from '@/lib/listings/search'
 import { InfiniteListings } from '@/components/InfiniteListings'
 import { ListingFilters } from '@/components/ListingFilters'
 import type { CategoryNode } from '@/components/CategoriesModal'
 import type { ListingImage } from '@/payload-types'
+import Icon, { type IconName } from '@/components/Icon'
 import styles from './index.module.css'
-
-export const metadata: Metadata = {
-  title: 'Доска объявлений Абхазии',
-  description: 'Недвижимость, транспорт, работа, услуги и другие товары.',
-  alternates: { canonical: '/' },
-}
+import { PromoBanner } from '@/components/PromoBanner'
 
 export const revalidate = 0
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const sp = await searchParams
+  const hasFilters = Object.keys(sp).some((k) => k !== 'page')
+
+  return {
+    title: 'Доска объявлений Абхазии',
+    description:
+      'Абхаз авто, недвижимость, электроника, работа и услуги. Свежие объявления от частных лиц и компаний по всей Абхазии. Разместите бесплатно за пару минут.',
+    alternates: {
+      canonical: '/',
+    },
+    ...(hasFilters ? { robots: { index: false, follow: true } } : {}),
+  }
+}
+
+const CATEGORY_ICONS: Record<string, IconName> = {
+  nedvizhimost: 'realEstate',
+  'arenda-zhilya': 'rentHousing',
+  transport: 'transport',
+  'zapchasti-i-aksessuary': 'autoParts',
+  elektronika: 'electronics',
+  rabota: 'work',
+  uslugi: 'services',
+  zhivotnye: 'animals',
+  'dlya-doma-i-dachi': 'homeGarden',
+  'lichnye-veschi': 'personalItems',
+  'hobbi-i-otdyh': 'hobby',
+  'biznes-i-oborudovanie': 'business',
 }
 
 async function getData(filters: Record<string, string>) {
@@ -95,19 +122,32 @@ export default async function HomePage({ searchParams }: Props) {
   const data = await getData(filters)
 
   return (
-    <div className={styles.wrapper}>
-      <ListingFilters
-        cities={data.cities}
-        categories={data.categories}
-        isAuthenticated={Boolean(user)}
-      >
-        <h1 className={styles.title}>Все объявления</h1>
-        <InfiniteListings
-          initialListings={data.listings}
-          initialHasMore={data.hasMore}
-          query={filters}
-        />
-      </ListingFilters>
+    <div className={styles.outer}>
+      <div className={styles.wrapper}>
+        <ListingFilters
+          cities={data.cities}
+          categories={data.categories}
+          isAuthenticated={Boolean(user)}
+        >
+          <div className={styles.categories}>
+            {data.categories.map((cat) => (
+              <Link key={cat.id} href={`/${cat.slug}`} className={styles.categoryBadge}>
+                <Icon name={CATEGORY_ICONS[cat.slug] || 'layoutGrid'} size={16} />
+                <span>{cat.title}</span>
+              </Link>
+            ))}
+          </div>
+
+          <h1 className={styles.title}>Свежие объявления</h1>
+          <InfiniteListings
+            initialListings={data.listings}
+            initialHasMore={data.hasMore}
+            query={filters}
+          />
+        </ListingFilters>
+      </div>
+
+      <PromoBanner />
     </div>
   )
 }

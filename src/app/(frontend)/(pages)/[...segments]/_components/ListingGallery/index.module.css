@@ -76,6 +76,8 @@
   top: var(--sp-3);
   right: var(--sp-3);
   z-index: 10;
+  display: flex;
+  gap: var(--sp-2);
 }
 
 .thumbs {
@@ -99,8 +101,8 @@
   padding: 2px;
   border: 2px solid transparent;
   border-radius: var(--radius-md);
-  overflow: hidden;
   background: var(--bg);
+  overflow: hidden;
   cursor: pointer;
 }
 
@@ -117,6 +119,10 @@
 }
 
 @media (max-width: 768px) {
+  .root {
+    margin: calc(-1 * var(--sp-2)) calc(-1 * var(--sp-2)) 0 calc(-1 * var(--sp-2));
+  }
+
   .main {
     touch-action: pan-y;
   }

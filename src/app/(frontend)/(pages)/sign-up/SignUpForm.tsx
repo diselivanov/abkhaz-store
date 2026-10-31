@@ -34,7 +34,7 @@ export function SignUpForm() {
       <form action={handleSubmit} className={styles.form}>
         <h1 className={styles.title}>Регистрация</h1>
 
-        <Input name="name" label="Имя" autoComplete="name" required />
+        <Input name="name" label="Отображаемое имя" autoComplete="name" required />
         <Input name="email" type="email" label="Email" autoComplete="email" required />
         <Input
           name="password"

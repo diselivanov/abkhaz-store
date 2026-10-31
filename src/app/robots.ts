@@ -7,8 +7,16 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/api/media/file/'],
-        disallow: ['/admin', '/api'],
+        allow: ['/', '/api/media/file/', '/api/avatars/file/', '/api/listingImages/file/'],
+        disallow: [
+          '/admin',
+          '/api',
+          '/profile',
+          '/sign-in',
+          '/sign-up',
+          '/listings/new',
+          '/listings/*/edit',
+        ],
       },
     ],
     sitemap: `${serverUrl}/sitemap.xml`,

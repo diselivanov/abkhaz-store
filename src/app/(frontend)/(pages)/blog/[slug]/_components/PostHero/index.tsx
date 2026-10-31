@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Icon from '@/components/Icon'
 import type { Media, User } from '@/payload-types'
-import { ShareButton } from '../ShareButton'
+import { ShareButton } from '../../../../../../../components/ShareButton'
 import styles from './index.module.css'
 
 type Props = {

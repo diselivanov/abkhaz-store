@@ -5,6 +5,7 @@ import { BlogFilters, type TagGroup } from './_components/BlogFilters'
 import { JsonLd } from '@/components/JsonLd'
 import { fetchBlogPosts } from '@/lib/blog/queries'
 import type { Tag } from '@/payload-types'
+import styles from './index.module.css'
 
 export const revalidate = 60
 
@@ -29,12 +30,12 @@ type Props = {
 
 export async function generateMetadata() {
   return {
-    title: 'Блог об Абхазии — города, пляжи, достопримечательности',
+    title: 'Блог об Абхазии: города, места, пляжи, статьи',
     description:
-      'Гид по Абхазии: обзоры городов, пляжи, исторические места и маршруты. Полезные статьи с фото, картами и советами для путешественников.',
+      'Обзоры городов, пляжей и исторических мест Абхазии. Фото, карты и советы для путешественников.',
     alternates: { canonical: '/blog' },
     openGraph: {
-      title: 'Блог об Абхазии — города, пляжи и достопримечательности',
+      title: 'Блог об Абхазии: города, места, пляжи, статьи',
       description:
         'Обзоры городов, пляжей и исторических мест Абхазии. Фото, карты и советы для путешественников.',
       type: 'website',
@@ -92,7 +93,7 @@ export default async function BlogPage({ searchParams }: Props) {
   }
 
   return (
-    <>
+    <div className={styles.outer}>
       <BlogIndex
         posts={posts}
         categories={categories}
@@ -103,7 +104,8 @@ export default async function BlogPage({ searchParams }: Props) {
         filters={<BlogFilters groups={groups} basePath="/blog" />}
         apiFilters={active}
       />
+
       <JsonLd data={jsonLd} />
-    </>
+    </div>
   )
 }

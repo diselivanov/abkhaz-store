@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Icon, { type IconName } from '@/components/Icon'
+import Image from 'next/image'
 import styles from './index.module.css'
 
 export type CategoryNode = {
@@ -28,9 +29,8 @@ const CATEGORY_ICONS: Record<string, IconName> = {
 }
 
 const MOBILE_LINKS = [
+  { label: 'Главная', href: '/' },
   { label: 'Разместить объявление', href: '/listings/new' },
-  { label: 'Помощь', href: '/' },
-  { label: 'Контакты', href: '/' },
   { label: 'Блог о Абхазии', href: '/blog' },
 ]
 
@@ -123,7 +123,16 @@ export function CategoriesModal({ open, categories, onClose, onSelect }: Props) 
         ) : (
           <div className={styles.mobilePanel}>
             <div className={styles.mobileHeader}>
-              <span className={styles.mobileBrand}>Abkhaz Store</span>
+              <span className={styles.mobileBrand}>
+                <Image
+                  src="/android-chrome-512x512.png"
+                  alt="Abkhaz Store"
+                  width={30}
+                  height={30}
+                  priority
+                />
+                Abkhaz Store
+              </span>
               <button
                 type="button"
                 className={styles.mobileClose}

@@ -97,7 +97,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const city = tax.cities.find((c) => c.slug === segments[0])
     if (city) {
       return {
-        title: `Объявления в ${city.title}`,
+        title: `Объявления в городе ${city.title}`,
         description: `Доска объявлений города ${city.title}.`,
         alternates: { canonical: `${serverUrl}/${city.slug}` },
       }
@@ -105,8 +105,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const cat = tax.categories.find((c) => c.slug === segments[0])
     if (cat) {
       return {
-        title: `${cat.title}`,
-        description: `Объявления в категории «${cat.title}».`,
+        title: cat.slug === 'transport' ? 'Абхаз авто | Абхазия' : `${cat.title} | Абхазия`,
+        description: `Объявления в категории «${cat.title}» по всей Абхазии.`,
         alternates: { canonical: `${serverUrl}/${cat.slug}` },
       }
     }
@@ -119,7 +119,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const cat1 = tax.categories.find((c) => c.slug === b)
     if (city && cat1) {
       return {
-        title: `${cat1.title} в ${city.title}`,
+        title:
+          cat1.slug === 'transport'
+            ? `Абхаз авто | ${city.title}`
+            : `${city.title} | ${cat1.title}`,
         description: `Объявления в категории «${cat1.title}» в городе ${city.title}.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat1.slug}` },
       }
@@ -128,8 +131,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const sub2 = tax.subcategories.find((s) => s.slug === b)
     if (cat2 && sub2) {
       return {
-        title: `${sub2.title} — ${cat2.title}`,
-        description: `Объявления в категории «${cat2.title}» — ${sub2.title}.`,
+        title:
+          cat2.slug === 'transport'
+            ? `Абхаз авто | ${sub2.title} | Абхазия`
+            : `${cat2.title} | ${sub2.title} | Абхазия`,
+        description: `Объявления в категории «${cat2.title}» — ${sub2.title} по всей Абхазии.`,
         alternates: { canonical: `${serverUrl}/${cat2.slug}/${sub2.slug}` },
       }
     }
@@ -142,7 +148,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const sub = tax.subcategories.find((s) => s.slug === segments[2])
     if (city && cat && sub) {
       return {
-        title: `${sub.title} — ${cat.title} в ${city.title}`,
+        title:
+          cat.slug === 'transport'
+            ? `Абхаз авто | ${sub.title} | ${city.title}`
+            : `${city.title} | ${cat.title} | ${sub.title}`,
         description: `Объявления в категории «${cat.title}» — ${sub.title} в городе ${city.title}.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat.slug}/${sub.slug}` },
       }
@@ -151,6 +160,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   if (segments.length === 4) {
+    const city = tax.cities.find((c) => c.slug === segments[0])
     const payload = await getPayload({ config })
     const { docs } = await payload.find({
       collection: 'listingAds',
@@ -173,12 +183,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       if (authorDoc?.blockedAt) return {}
     } catch {}
 
+    const title = city ? `${ad.title} | ${city.title}` : `${ad.title} | Абхазия`
+
     return {
-      title: ad.title,
+      title,
       description: ad.description.slice(0, 160),
       alternates: { canonical: `${serverUrl}/${segments.join('/')}` },
       openGraph: {
-        title: ad.title,
+        title,
         description: ad.description.slice(0, 160),
         type: 'website',
         url: `${serverUrl}/${segments.join('/')}`,
@@ -212,29 +224,31 @@ export default async function SegmentsPage({ params, searchParams }: Props) {
       : buildListingsWhere({ category: slug, q: filters.q, sort, attributes: filters })
 
     const { listings, hasMore } = await getListings(where, sort)
-    const heading = city ? `Объявления в ${city.title}` : category!.title
+    const heading = city ? `Объявления в городе ${city.title}` : category!.title
 
     return (
-      <div className={styles.root}>
-        <ListingFilters
-          cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
-          categories={tax.categoriesTree}
-          currentCity={city?.slug || ''}
-          currentCategory={category?.slug || ''}
-        >
-          <Breadcrumbs
-            items={[
-              { label: 'Главная', href: '/' },
-              { label: city ? city.title : category!.title, href: `/${slug}` },
-            ]}
-          />
-          <h1 className={styles.heading}>{heading}</h1>
-          <InfiniteListings
-            initialListings={listings}
-            initialHasMore={hasMore}
-            query={{ ...filters, ...(city ? { city: city.slug } : { category: category!.slug }) }}
-          />
-        </ListingFilters>
+      <div className={styles.outer}>
+        <div className={styles.root}>
+          <ListingFilters
+            cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
+            categories={tax.categoriesTree}
+            currentCity={city?.slug || ''}
+            currentCategory={category?.slug || ''}
+          >
+            <Breadcrumbs
+              items={[
+                { label: 'Главная', href: '/' },
+                { label: city ? city.title : category!.title, href: `/${slug}` },
+              ]}
+            />
+            <h1 className={styles.heading}>{heading}</h1>
+            <InfiniteListings
+              initialListings={listings}
+              initialHasMore={hasMore}
+              query={{ ...filters, ...(city ? { city: city.slug } : { category: category!.slug }) }}
+            />
+          </ListingFilters>
+        </div>
       </div>
     )
   }
@@ -257,29 +271,31 @@ export default async function SegmentsPage({ params, searchParams }: Props) {
       const { listings, hasMore } = await getListings(where, sort)
 
       return (
-        <div className={styles.root}>
-          <ListingFilters
-            cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
-            categories={tax.categoriesTree}
-            currentCity={city.slug}
-            currentCategory={catByB.slug}
-          >
-            <Breadcrumbs
-              items={[
-                { label: 'Главная', href: '/' },
-                { label: city.title, href: `/${city.slug}` },
-                { label: catByB.title, href: `/${city.slug}/${catByB.slug}` },
-              ]}
-            />
-            <h1 className={styles.heading}>
-              {catByB.title} в {city.title}
-            </h1>
-            <InfiniteListings
-              initialListings={listings}
-              initialHasMore={hasMore}
-              query={{ ...filters, city: city.slug, category: catByB.slug }}
-            />
-          </ListingFilters>
+        <div className={styles.outer}>
+          <div className={styles.root}>
+            <ListingFilters
+              cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
+              categories={tax.categoriesTree}
+              currentCity={city.slug}
+              currentCategory={catByB.slug}
+            >
+              <Breadcrumbs
+                items={[
+                  { label: 'Главная', href: '/' },
+                  { label: city.title, href: `/${city.slug}` },
+                  { label: catByB.title, href: `/${city.slug}/${catByB.slug}` },
+                ]}
+              />
+              <h1 className={styles.heading}>
+                {catByB.title} в городе {city.title}
+              </h1>
+              <InfiniteListings
+                initialListings={listings}
+                initialHasMore={hasMore}
+                query={{ ...filters, city: city.slug, category: catByB.slug }}
+              />
+            </ListingFilters>
+          </div>
         </div>
       )
     }
@@ -295,27 +311,29 @@ export default async function SegmentsPage({ params, searchParams }: Props) {
       const { listings, hasMore } = await getListings(where, sort)
 
       return (
-        <div className={styles.root}>
-          <ListingFilters
-            cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
-            categories={tax.categoriesTree}
-            currentCategory={catByA.slug}
-            currentSubcategory={subByB.slug}
-          >
-            <Breadcrumbs
-              items={[
-                { label: 'Главная', href: '/' },
-                { label: catByA.title, href: `/${catByA.slug}` },
-                { label: subByB.title, href: `/${catByA.slug}/${subByB.slug}` },
-              ]}
-            />
-            <h1 className={styles.heading}>{subByB.title}</h1>
-            <InfiniteListings
-              initialListings={listings}
-              initialHasMore={hasMore}
-              query={{ ...filters, category: catByA.slug, subcategory: subByB.slug }}
-            />
-          </ListingFilters>
+        <div className={styles.outer}>
+          <div className={styles.root}>
+            <ListingFilters
+              cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
+              categories={tax.categoriesTree}
+              currentCategory={catByA.slug}
+              currentSubcategory={subByB.slug}
+            >
+              <Breadcrumbs
+                items={[
+                  { label: 'Главная', href: '/' },
+                  { label: catByA.title, href: `/${catByA.slug}` },
+                  { label: subByB.title, href: `/${catByA.slug}/${subByB.slug}` },
+                ]}
+              />
+              <h1 className={styles.heading}>{subByB.title}</h1>
+              <InfiniteListings
+                initialListings={listings}
+                initialHasMore={hasMore}
+                query={{ ...filters, category: catByA.slug, subcategory: subByB.slug }}
+              />
+            </ListingFilters>
+          </div>
         </div>
       )
     }
@@ -341,36 +359,38 @@ export default async function SegmentsPage({ params, searchParams }: Props) {
     const { listings, hasMore } = await getListings(where, sort)
 
     return (
-      <div className={styles.root}>
-        <ListingFilters
-          cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
-          categories={tax.categoriesTree}
-          currentCity={city.slug}
-          currentCategory={category.slug}
-          currentSubcategory={sub.slug}
-        >
-          <Breadcrumbs
-            items={[
-              { label: 'Главная', href: '/' },
-              { label: city.title, href: `/${city.slug}` },
-              { label: category.title, href: `/${city.slug}/${category.slug}` },
-              { label: sub.title, href: `/${city.slug}/${category.slug}/${sub.slug}` },
-            ]}
-          />
-          <h1 className={styles.heading}>
-            {sub.title} в {city.title}
-          </h1>
-          <InfiniteListings
-            initialListings={listings}
-            initialHasMore={hasMore}
-            query={{
-              ...filters,
-              city: city.slug,
-              category: category.slug,
-              subcategory: sub.slug,
-            }}
-          />
-        </ListingFilters>
+      <div className={styles.outer}>
+        <div className={styles.root}>
+          <ListingFilters
+            cities={tax.cities.map((c) => ({ id: c.id, title: c.title, slug: c.slug }))}
+            categories={tax.categoriesTree}
+            currentCity={city.slug}
+            currentCategory={category.slug}
+            currentSubcategory={sub.slug}
+          >
+            <Breadcrumbs
+              items={[
+                { label: 'Главная', href: '/' },
+                { label: city.title, href: `/${city.slug}` },
+                { label: category.title, href: `/${city.slug}/${category.slug}` },
+                { label: sub.title, href: `/${city.slug}/${category.slug}/${sub.slug}` },
+              ]}
+            />
+            <h1 className={styles.heading}>
+              {sub.title} в городе {city.title}
+            </h1>
+            <InfiniteListings
+              initialListings={listings}
+              initialHasMore={hasMore}
+              query={{
+                ...filters,
+                city: city.slug,
+                category: category.slug,
+                subcategory: sub.slug,
+              }}
+            />
+          </ListingFilters>
+        </div>
       </div>
     )
   }
@@ -432,71 +452,111 @@ export default async function SegmentsPage({ params, searchParams }: Props) {
 
     const jsonLd = {
       '@context': 'https://schema.org',
-      '@type': 'Product',
-      name: ad.title,
-      description: ad.description,
-      image: images.map((i) => i.url).filter(Boolean),
-      offers: {
-        '@type': 'Offer',
-        price: ad.price,
-        priceCurrency: 'RUB',
-        availability: 'https://schema.org/InStock',
-      },
-      breadcrumb: {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Главная', item: `${serverUrl}/` },
-          { '@type': 'ListItem', position: 2, name: city.title, item: `${serverUrl}/${city.slug}` },
-          {
-            '@type': 'ListItem',
-            position: 3,
-            name: category.title,
-            item: `${serverUrl}/${city.slug}/${category.slug}`,
+      '@graph': [
+        {
+          '@type': 'Product',
+          name: ad.title,
+          description: ad.description,
+          image: images.map((i) => i.url).filter(Boolean),
+          url,
+          brand: {
+            '@type': 'Brand',
+            name: 'Abkhaz Store',
           },
-          {
-            '@type': 'ListItem',
-            position: 4,
-            name: subcategory.title,
-            item: `${serverUrl}/${city.slug}/${category.slug}/${subcategory.slug}`,
-          },
-          { '@type': 'ListItem', position: 5, name: ad.title, item: url },
-        ],
-      },
-    }
-
-    return (
-      <article className={styles.detail}>
-        <Breadcrumbs
-          items={[
-            { label: 'Главная', href: '/' },
-            { label: city.title, href: `/${city.slug}` },
-            { label: category.title, href: `/${city.slug}/${category.slug}` },
-            {
-              label: subcategory.title,
-              href: `/${city.slug}/${category.slug}/${subcategory.slug}`,
-            },
-            { label: ad.title, href: `/${segments.join('/')}` },
-          ]}
-        />
-
-        <div className={styles.detailLayout}>
-          <div className={styles.detailLeft}>
-            <div className={styles.detailGallery}>
-              <ListingGallery
-                images={images}
-                title={ad.title}
-                actions={
-                  canEdit ? (
-                    <ListingActions
-                      adId={ad.id}
-                      status={ad.status}
-                      editHref={`/listings/${ad.slug}/edit`}
-                    />
-                  ) : undefined
+          offers: {
+            '@type': 'Offer',
+            price: ad.price,
+            priceCurrency: 'RUB',
+            availability:
+              ad.status === 'active' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+            url,
+            seller: author
+              ? {
+                  '@type': 'Person',
+                  name: author.name || 'Пользователь',
                 }
-              />
+              : undefined,
+          },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Главная', item: `${serverUrl}/` },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: city.title,
+              item: `${serverUrl}/${city.slug}`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: category.title,
+              item: `${serverUrl}/${city.slug}/${category.slug}`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 4,
+              name: subcategory.title,
+              item: `${serverUrl}/${city.slug}/${category.slug}/${subcategory.slug}`,
+            },
+            { '@type': 'ListItem', position: 5, name: ad.title, item: url },
+          ],
+        },
+      ],
+    }
+    return (
+      <div className={styles.detailWrapper}>
+        <article className={styles.detail}>
+          <Breadcrumbs
+            items={[
+              { label: 'Главная', href: '/' },
+              { label: city.title, href: `/${city.slug}` },
+              { label: category.title, href: `/${city.slug}/${category.slug}` },
+              {
+                label: subcategory.title,
+                href: `/${city.slug}/${category.slug}/${subcategory.slug}`,
+              },
+              { label: ad.title, href: `/${segments.join('/')}` },
+            ]}
+          />
+
+          <div className={styles.detailLayout}>
+            <div className={styles.detailLeft}>
+              <div className={styles.detailGallery}>
+                <ListingGallery
+                  images={images}
+                  title={ad.title}
+                  shareUrl={`/${segments.join('/')}`}
+                  actions={
+                    canEdit ? (
+                      <ListingActions
+                        adId={ad.id}
+                        status={ad.status}
+                        editHref={`/listings/${ad.slug}/edit`}
+                      />
+                    ) : undefined
+                  }
+                />
+              </div>
+              <div className={styles.detailHead}>
+                <ListingContacts
+                  author={author}
+                  createdAt={ad.createdAt}
+                  title={ad.title}
+                  price={formatPrice(ad.price)}
+                  city={city.title}
+                />
+              </div>
+              <div className={styles.detailInfo}>
+                <ListingInfo
+                  description={ad.description}
+                  attributes={ad.attributes as Record<string, unknown> | null | undefined}
+                  attributeFields={attributeDef?.fields || null}
+                />
+              </div>
             </div>
-            <div className={styles.detailHead}>
+            <aside className={styles.detailRight}>
               <ListingContacts
                 author={author}
                 createdAt={ad.createdAt}
@@ -504,31 +564,15 @@ export default async function SegmentsPage({ params, searchParams }: Props) {
                 price={formatPrice(ad.price)}
                 city={city.title}
               />
-            </div>
-            <div className={styles.detailInfo}>
-              <ListingInfo
-                description={ad.description}
-                attributes={ad.attributes as Record<string, unknown> | null | undefined}
-                attributeFields={attributeDef?.fields || null}
-              />
-            </div>
+            </aside>
           </div>
-          <aside className={styles.detailRight}>
-            <ListingContacts
-              author={author}
-              createdAt={ad.createdAt}
-              title={ad.title}
-              price={formatPrice(ad.price)}
-              city={city.title}
-            />
-          </aside>
-        </div>
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </article>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        </article>
+      </div>
     )
   }
 

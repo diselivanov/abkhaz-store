@@ -34,7 +34,6 @@
   display: flex;
   width: 100%;
   gap: var(--sp-2);
-  margin: 0 var(--sp-6);
 }
 
 .search {
@@ -132,7 +131,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
   pointer-events: none;
 }
 
@@ -146,7 +145,7 @@
   display: flex;
   flex-direction: column;
   background: var(--bg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
@@ -155,7 +154,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-2);
-  padding: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -197,7 +196,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
-  padding: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
 }
 
 .modalFooter {
@@ -223,8 +222,8 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: var(--control-h);
-    height: var(--control-h);
+    width: var(--control-h-sm);
+    height: var(--control-h-sm);
     padding: 0;
     border: 1px solid var(--border);
     border-radius: var(--radius-full);
@@ -245,7 +244,8 @@
     right: 0;
     z-index: 40;
     background: var(--bg);
-    padding: var(--sp-2);
+    padding: 0 var(--sp-2);
+    height: var(--mobile-row-h);
     justify-content: flex-start;
     width: auto;
   }
@@ -259,7 +259,13 @@
   }
 
   .modalHeader {
-    padding: var(--sp-2) var(--sp-4);
+    height: var(--mobile-row-h);
+    padding: 0 var(--sp-4);
+    gap: 0;
+  }
+
+  .modalBody {
+    padding: var(--sp-4) var(--sp-3);
   }
 
   .modalRoot {
@@ -289,10 +295,6 @@
     color: var(--fg);
     cursor: pointer;
     border-radius: var(--radius-full);
-  }
-
-  .modalHeader {
-    gap: 0;
   }
 
   .modalClose:active {

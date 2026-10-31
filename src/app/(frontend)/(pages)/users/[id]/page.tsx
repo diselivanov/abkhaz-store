@@ -91,17 +91,19 @@ export default async function UserProfilePage({ params }: Props) {
   const listings = docs.map((d) => ({ ...d, images: imagesByAd.get(d.id) || [] }))
 
   return (
-    <div className={styles.root}>
-      <UserHeader
-        name={user.name || 'Пользователь'}
-        phone={user.phone || null}
-        whatsapp={user.whatsapp || null}
-        telegram={user.telegram || null}
-        description={user.description || null}
-        avatarUrl={avatarUrl}
-        createdAt={user.createdAt}
-      />
-      <UserListingsTabs listings={listings} />
+    <div className={styles.wrapper}>
+      <div className={styles.root}>
+        <UserHeader
+          name={user.name || 'Пользователь'}
+          phone={user.phone || null}
+          whatsapp={user.whatsapp || null}
+          telegram={user.telegram || null}
+          description={user.description || null}
+          avatarUrl={avatarUrl}
+          createdAt={user.createdAt}
+        />
+        <UserListingsTabs listings={listings} />
+      </div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Avatar } from '@/components/Avatar'
 import Icon from '@/components/Icon'
 import styles from './index.module.css'
@@ -13,6 +14,7 @@ type Props = {
   description: string | null
   avatarUrl: string | null
   createdAt: string
+  userId: number
 }
 
 function formatDate(iso: string): string {
@@ -40,11 +42,46 @@ export function UserHeader({
   description,
   avatarUrl,
   createdAt,
+  userId,
 }: Props) {
+  const router = useRouter()
   const [isExpanded, setIsExpanded] = useState(false)
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/users/${userId}`
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: name, url })
+      } catch {}
+    } else {
+      await navigator.clipboard.writeText(url)
+    }
+  }
 
   return (
     <div className={styles.header}>
+      <div className={styles.mobileNav}>
+        <button
+          type="button"
+          className={styles.backBtn}
+          onClick={() => router.back()}
+          aria-label="Назад"
+        >
+          <Icon name="chevronLeft" size={22} />
+        </button>
+        <div className={styles.mobileNavCenter}>Профиль</div>
+        <div className={styles.mobileNavRight}>
+          <button
+            type="button"
+            className={styles.iconBtn}
+            onClick={handleShare}
+            aria-label="Поделиться"
+          >
+            <Icon name="share" size={20} />
+          </button>
+        </div>
+      </div>
+
       <div className={styles.topRow}>
         <div className={styles.avatarWrap}>
           <Avatar src={avatarUrl} name={name} size={80} />
@@ -105,7 +142,7 @@ export function UserHeader({
               className={styles.descriptionToggle}
               onClick={() => setIsExpanded(true)}
             >
-              Читать полностью
+              Читать полностью...
             </button>
           )}
         </div>

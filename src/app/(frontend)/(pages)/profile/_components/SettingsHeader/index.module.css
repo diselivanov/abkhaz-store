@@ -8,12 +8,17 @@
     align-items: center;
     justify-content: space-between;
     gap: 0;
-    padding: var(--sp-2) var(--sp-4);
+    height: var(--mobile-row-h);
+    padding: 0 var(--sp-4);
     border-bottom: 1px solid var(--border);
     background: var(--bg);
-    position: sticky;
+    position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     z-index: 10;
+    box-sizing: border-box;
   }
 
   .back {

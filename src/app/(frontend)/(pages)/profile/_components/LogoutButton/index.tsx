@@ -31,7 +31,7 @@ export function LogoutButton({ full = false }: Props) {
       </Button>
       <ConfirmModal
         open={open}
-        title="Выйти из аккаунта?"
+        title="Выход из аккаунта"
         description="Вы уверены, что хотите выйти?"
         confirmLabel="Выйти"
         onConfirm={onConfirm}

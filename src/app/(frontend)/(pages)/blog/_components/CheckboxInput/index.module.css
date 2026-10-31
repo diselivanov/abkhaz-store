@@ -26,7 +26,7 @@
 }
 
 .controlActive {
-  background: var(--blue-10);
-  color: var(--btn);
-  border-color: var(--blue-10);
+  background: var(--btn);
+  border-color: var(--btn);
+  color: var(--btn-fg);
 }

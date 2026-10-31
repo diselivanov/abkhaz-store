@@ -192,7 +192,7 @@
 .drawerList .dropdown {
   max-height: none;
   background: var(--bg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 

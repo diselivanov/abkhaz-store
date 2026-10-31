@@ -6,6 +6,7 @@ import { BlogFilters, type TagGroup } from '../../_components/BlogFilters'
 import { JsonLd } from '@/components/JsonLd'
 import { fetchBlogPosts } from '@/lib/blog/queries'
 import type { Tag } from '@/payload-types'
+import styles from './index.module.css'
 
 export const revalidate = 300
 
@@ -136,18 +137,20 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   return (
     <>
-      <BlogIndex
-        posts={posts}
-        categories={categories}
-        hasMore={hasMore}
-        query={query}
-        activeCategorySlug={category.slug}
-        heading={category.title}
-        searchAction={`/blog/category/${category.slug}`}
-        filters={<BlogFilters groups={groups} basePath={`/blog/category/${category.slug}`} />}
-        apiFilters={active}
-      />
-      <JsonLd data={jsonLd} />
+      <div className={styles.outer}>
+        <BlogIndex
+          posts={posts}
+          categories={categories}
+          hasMore={hasMore}
+          query={query}
+          activeCategorySlug={category.slug}
+          heading={category.title}
+          searchAction={`/blog/category/${category.slug}`}
+          filters={<BlogFilters groups={groups} basePath={`/blog/category/${category.slug}`} />}
+          apiFilters={active}
+        />
+        <JsonLd data={jsonLd} />
+      </div>
     </>
   )
 }

@@ -7,6 +7,9 @@
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
+  transition:
+    background var(--transition),
+    border-color var(--transition);
 }
 
 .sm {

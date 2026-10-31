@@ -17,10 +17,23 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 export const metadata: Metadata = {
   metadataBase: new URL(serverUrl),
   title: {
-    default: 'Abkhaz Store',
-    template: 'Abkhaz Store — %s',
+    default: 'Abkhaz Store — доска объявлений Абхазии',
+    template: '%s — Abkhaz Store',
   },
-  description: 'Открой для себя Абхазию: города, места, пляжи, маршруты и статьи.',
+  description:
+    'Абхаз авто, недвижимость, электроника, работа и услуги. Свежие объявления от частных лиц и компаний по всей Абхазии. Разместите бесплатно за пару минут.',
+  keywords: [
+    'абхаз авто',
+    'абхазия авто',
+    'доска объявлений абхазия',
+    'работа в абхазии',
+    'отдых в абхазии',
+    'недвижимость абхазия',
+    'абхазия отели',
+    'абхазия',
+    'сайт абхазии',
+    'гагры абхазия',
+  ],
   applicationName: 'Abkhaz Store',
   alternates: {
     canonical: '/',
@@ -30,8 +43,9 @@ export const metadata: Metadata = {
     siteName: 'Abkhaz Store',
     locale: 'ru_RU',
     url: '/',
-    title: 'Abkhaz Store',
-    description: 'Открой для себя Абхазию: города, места, пляжи, маршруты и статьи.',
+    title: 'Abkhaz Store — доска объявлений Абхазии',
+    description:
+      'Абхаз авто, недвижимость, электроника, работа и услуги. Свежие объявления от частных лиц и компаний по всей Абхазии. Разместите бесплатно за пару минут.',
   },
   twitter: {
     card: 'summary_large_image',
@@ -46,6 +60,15 @@ export const metadata: Metadata = {
       'max-snippet': -1,
       'max-video-preview': -1,
     },
+  },
+  manifest: '/site.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
 }
 
@@ -85,7 +108,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           <Layout>{children}</Layout>
         </AlertProvider>
         <JsonLd data={siteLd} />
-        {/* <script
+        <script
           dangerouslySetInnerHTML={{
             __html: `
       (function(m,e,t,r,i,k,a){
@@ -118,7 +141,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       gtag('config', 'G-LX3RC11ZLG');
     `,
           }}
-        /> */}
+        />
       </body>
     </html>
   )

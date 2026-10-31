@@ -6,14 +6,16 @@ import Image from 'next/image'
 import Icon from '@/components/Icon'
 import type { ListingImage } from '@/payload-types'
 import styles from './index.module.css'
+import { ShareButton } from '../../../../../../components/ShareButton'
 
 type Props = {
   images: ListingImage[]
   title: string
   actions?: React.ReactNode
+  shareUrl: string
 }
 
-export function ListingGallery({ images, title, actions }: Props) {
+export function ListingGallery({ images, title, actions, shareUrl }: Props) {
   const router = useRouter()
   const [active, setActive] = useState(0)
   const [isMobile, setIsMobile] = useState<boolean | null>(null)
@@ -136,7 +138,10 @@ export function ListingGallery({ images, title, actions }: Props) {
           )}
         </div>
 
-        {actions && <div className={styles.actions}>{actions}</div>}
+        <div className={styles.actions}>
+          <ShareButton title={title} url={shareUrl} />
+          {actions}
+        </div>
       </div>
 
       <div className={styles.thumbs} ref={thumbsRef}>

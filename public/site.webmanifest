@@ -1,0 +1,16 @@
+{
+  "name": "Abkhaz Store — доска объявлений Абхазии",
+  "short_name": "Abkhaz Store",
+  "description": "Авто, недвижимость, электроника, работа и услуги. Свежие объявления от частных лиц и компаний по всей Абхазии. Разместите бесплатно за пару минут.",
+  "icons": [
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "ru",
+  "orientation": "portrait"
+}

@@ -91,7 +91,7 @@
   margin: var(--sp-2);
   padding: 0;
   background: var(--bg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
   user-select: none;
 }

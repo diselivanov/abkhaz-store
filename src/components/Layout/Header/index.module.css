@@ -9,12 +9,19 @@
 }
 
 .logo {
-  font-size: 18px;
-  font-weight: var(--fw);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
   color: var(--fg);
+  font-weight: 500;
   text-decoration: none;
   justify-self: start;
   user-select: none;
+}
+
+.logoText {
+  font-size: 18px;
+  font-weight: var(--fw-sm);
 }
 
 .center {
@@ -35,6 +42,16 @@
   align-items: center;
   text-decoration: none;
   user-select: none;
+}
+
+.ava {
+  border: 3px solid transparent;
+  border-radius: var(--radius-full);
+  transition: border-color var(--transition);
+}
+
+.ava:hover {
+  border-color: var(--border);
 }
 
 @media (max-width: 768px) {

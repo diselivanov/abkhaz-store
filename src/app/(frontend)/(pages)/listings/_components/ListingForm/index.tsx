@@ -315,8 +315,8 @@ export function ListingForm({
 
       <ConfirmModal
         open={confirmOpen}
-        title="Размещение объявления"
-        description="После отправки объявление попадёт на модерацию и будет доступно в вашем профиле во вкладке «На проверке»."
+        title="Разместить объявление?"
+        description="После отправки объявление попадёт на проверку и будет доступно в вашем профиле во вкладке «На проверке»."
         confirmLabel="ОК"
         onConfirm={onConfirmSubmit}
         onCancel={() => setConfirmOpen(false)}

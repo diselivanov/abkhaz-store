@@ -18,7 +18,6 @@ export function ListingCard({ listing, priority = false }: Props) {
   const [isMobile, setIsMobile] = useState(false)
   const mediaRef = useRef<HTMLDivElement | null>(null)
   const scrollRef = useRef<HTMLDivElement | null>(null)
-  const touchStartX = useRef<number | null>(null)
 
   const images = listing.images
 
@@ -60,29 +59,6 @@ export function ListingCard({ listing, priority = false }: Props) {
   const onMouseLeave = () => {
     if (isMobile) return
     setActive(0)
-  }
-
-  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!isMobile) return
-    touchStartX.current = e.touches[0]?.clientX ?? null
-  }
-
-  const onTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!isMobile || touchStartX.current == null || images.length < 2) {
-      touchStartX.current = null
-      return
-    }
-    const endX = e.changedTouches[0]?.clientX ?? touchStartX.current
-    const diff = endX - touchStartX.current
-    touchStartX.current = null
-
-    const threshold = 30
-    if (Math.abs(diff) < threshold) return
-
-    setActive((prev) => {
-      if (diff < 0) return prev + 1 >= images.length ? 0 : prev + 1
-      return prev - 1 < 0 ? images.length - 1 : prev - 1
-    })
   }
 
   const onScroll = () => {

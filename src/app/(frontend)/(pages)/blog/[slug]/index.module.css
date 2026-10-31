@@ -77,7 +77,7 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 }
 
 .contentFigure figcaption {
@@ -97,7 +97,7 @@
   }
 
   .related {
-    padding: 0 var(--sp-3);
+    padding: 0 var(--sp-2);
   }
 
   .content h2 {

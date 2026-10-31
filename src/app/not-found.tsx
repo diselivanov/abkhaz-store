@@ -10,11 +10,13 @@ export default function NotFound() {
   return (
     <div
       style={{
-        minHeight: '70vh',
+        minHeight: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '40px 24px',
+        background: 'var(--bg)',
+        userSelect: 'none',
       }}
     >
       <div
@@ -33,7 +35,7 @@ export default function NotFound() {
             fontWeight: 700,
             lineHeight: 1,
             letterSpacing: '-4px',
-            background: 'linear-gradient(135deg, #0070f3 0%, #00c2ff 100%)',
+            background: 'linear-gradient(135deg, var(--btn) 0%, var(--white) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -45,9 +47,9 @@ export default function NotFound() {
         <h1
           style={{
             margin: 0,
-            fontSize: '22px',
-            fontWeight: 600,
-            color: '#0e0e0e',
+            fontSize: 'var(--fs-xl)',
+            fontWeight: 'var(--fw)',
+            color: 'var(--fg)',
             letterSpacing: '-0.3px',
           }}
         >
@@ -57,32 +59,13 @@ export default function NotFound() {
         <p
           style={{
             margin: 0,
-            fontSize: '15px',
+            fontSize: 'var(--fs-main)',
             lineHeight: 1.5,
-            color: '#4d4d4d',
+            color: 'var(--fg-secondary)',
           }}
         >
           Возможно, она была удалена или вы перешли по неверной ссылке.
         </p>
-
-        <Link
-          href="/blog"
-          style={{
-            marginTop: '8px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            height: '40px',
-            padding: '0 24px',
-            borderRadius: '9999px',
-            background: '#0070f3',
-            color: '#ffffff',
-            fontSize: '14px',
-            textDecoration: 'none',
-            transition: 'background 0.15s ease',
-          }}
-        >
-          На главную
-        </Link>
       </div>
     </div>
   )

@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sp-4);
+  padding: var(--sp-3);
   background: var(--overlay);
 }
 
@@ -16,7 +16,7 @@
   flex-direction: column;
   gap: var(--sp-3);
   padding: var(--sp-5);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--bg);
   box-shadow: var(--shadow-sm);
 }
