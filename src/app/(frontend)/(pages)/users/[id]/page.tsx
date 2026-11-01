@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = user.name || 'Пользователь'
 
   return {
-    title: `${name} — объявления`,
+    title: `${name} | объявления`,
     description: `Объявления пользователя ${name}.`,
     alternates: { canonical: `${serverUrl}/users/${user.id}` },
   }

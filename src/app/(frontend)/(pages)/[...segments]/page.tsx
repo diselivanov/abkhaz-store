@@ -107,7 +107,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const city = tax.cities.find((c) => c.slug === segments[0])
     if (city) {
       return {
-        title: `Объявления в ${city.title} — купить и продать`,
+        title: `Объявления в ${city.title}: купить и продать`,
         description: `Свежие объявления в ${city.title}: авто, недвижимость, работа, услуги, электроника. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${city.slug}` },
       }
@@ -117,10 +117,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const isTransport = cat.slug === 'transport'
       return {
         title: isTransport
-          ? `Абхаз Авто — купить и продать в Абхазии`
-          : `${cat.title} в Абхазии — объявления`,
+          ? `Абхаз Авто: купить и продать в Абхазии`
+          : `${cat.title} в Абхазии: объявления`,
         description: isTransport
-          ? `Абхаз Авто — объявления о продаже машин в Абхазии. Легковые, внедорожники, спецтехника, мото.`
+          ? `Абхаз Авто. Объявления о продаже машин в Абхазии: легковые, внедорожники, спецтехника, мото.`
           : `Объявления в категории «${cat.title}» по всей Абхазии. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${cat.slug}` },
       }
@@ -136,10 +136,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const isTransport = cat1.slug === 'transport'
       return {
         title: isTransport
-          ? `Абхаз Авто — ${city.title}`
-          : `${cat1.title} в ${city.title} — объявления`,
+          ? `Абхаз Авто в ${city.title}`
+          : `${cat1.title} в ${city.title}: объявления`,
         description: isTransport
-          ? `Абхаз Авто в ${city.title} — объявления о продаже машин. Легковые, внедорожники, спецтехника, мото.`
+          ? `Абхаз Авто в ${city.title}. Объявления о продаже машин: легковые, внедорожники, спецтехника, мото.`
           : `Объявления в категории «${cat1.title}» в ${city.title}. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat1.slug}` },
       }
@@ -149,11 +149,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (cat2 && sub2) {
       const isTransport = cat2.slug === 'transport'
       return {
-        title: isTransport
-          ? `Абхаз Авто — ${sub2.title}`
-          : `${sub2.title} — ${cat2.title} в Абхазии`,
+        title: isTransport ? `Абхаз Авто: ${sub2.title}` : `${sub2.title}: ${cat2.title} в Абхазии`,
         description: isTransport
-          ? `Абхаз Авто — ${sub2.title} в Абхазии. Объявления с фото и подробностями.`
+          ? `Абхаз Авто. ${sub2.title} в Абхазии. Объявления с фото и подробностями.`
           : `Объявления «${sub2.title}» в категории «${cat2.title}» по всей Абхазии. С фото и подробностями.`,
         alternates: { canonical: `${serverUrl}/${cat2.slug}/${sub2.slug}` },
       }
@@ -169,10 +167,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const isTransport = cat.slug === 'transport'
       return {
         title: isTransport
-          ? `Абхаз Авто — ${sub.title}, ${city.title}`
-          : `${sub.title} в ${city.title} — объявления`,
+          ? `Абхаз Авто: ${sub.title}, ${city.title}`
+          : `${sub.title} в ${city.title}: объявления`,
         description: isTransport
-          ? `Абхаз Авто — ${sub.title} в ${city.title}. Объявления с фото и подробностями.`
+          ? `Абхаз Авто. ${sub.title} в ${city.title}. Объявления с фото и подробностями.`
           : `Объявления «${sub.title}» в ${city.title}. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat.slug}/${sub.slug}` },
       }
@@ -203,8 +201,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     } catch {}
 
     const price = typeof ad.price === 'number' ? `${ad.price.toLocaleString('ru-RU')} ₽` : ''
-    const cityPart = city ? ` в ${city.title}` : ' в Абхазии'
-    const title = `${clean(ad.title)}${price ? ' — ' + price : ''}${cityPart}`
+    const cityPart = city ? `, ${city.title}` : ', Абхазия'
+    const title = `${clean(ad.title)}${price ? ', ' + price : ''}${cityPart}`
     const description = cut(ad.description)
 
     return {
