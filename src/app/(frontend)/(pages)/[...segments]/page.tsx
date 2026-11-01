@@ -103,25 +103,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return (lastSpace > 80 ? slice.slice(0, lastSpace) : slice) + '…'
   }
 
+  const cityWord = (t: string) => `в городе ${t}`
+
   if (segments.length === 1) {
     const city = tax.cities.find((c) => c.slug === segments[0])
     if (city) {
       return {
-        title: `Объявления в ${city.title}: купить и продать`,
-        description: `Свежие объявления в ${city.title}: авто, недвижимость, работа, услуги, электроника. Покупайте и продавайте на Abkhaz Store.`,
+        title: city.title,
+        description: `Объявления ${cityWord(city.title)}.`,
         alternates: { canonical: `${serverUrl}/${city.slug}` },
       }
     }
     const cat = tax.categories.find((c) => c.slug === segments[0])
     if (cat) {
-      const isTransport = cat.slug === 'transport'
       return {
-        title: isTransport
-          ? `Абхаз Авто: купить и продать в Абхазии`
-          : `${cat.title} в Абхазии: объявления`,
-        description: isTransport
-          ? `Абхаз Авто. Объявления о продаже машин в Абхазии: легковые, внедорожники, спецтехника, мото.`
-          : `Объявления в категории «${cat.title}» по всей Абхазии. Покупайте и продавайте на Abkhaz Store.`,
+        title: cat.slug === 'transport' ? 'Абхаз Авто' : cat.title,
+        description: `Объявления в категории «${cat.title}».`,
         alternates: { canonical: `${serverUrl}/${cat.slug}` },
       }
     }
@@ -133,26 +130,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const city = tax.cities.find((c) => c.slug === a)
     const cat1 = tax.categories.find((c) => c.slug === b)
     if (city && cat1) {
-      const isTransport = cat1.slug === 'transport'
+      const catTitle = cat1.slug === 'transport' ? 'Абхаз Авто' : cat1.title
       return {
-        title: isTransport
-          ? `Абхаз Авто в ${city.title}`
-          : `${cat1.title} в ${city.title}: объявления`,
-        description: isTransport
-          ? `Абхаз Авто в ${city.title}. Объявления о продаже машин: легковые, внедорожники, спецтехника, мото.`
-          : `Объявления в категории «${cat1.title}» в ${city.title}. Покупайте и продавайте на Abkhaz Store.`,
+        title: `${city.title} | ${catTitle}`,
+        description: `Объявления в категории «${cat1.title}», ${cityWord(city.title)}.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat1.slug}` },
       }
     }
     const cat2 = tax.categories.find((c) => c.slug === a)
     const sub2 = tax.subcategories.find((s) => s.slug === b)
     if (cat2 && sub2) {
-      const isTransport = cat2.slug === 'transport'
+      const catTitle = cat2.slug === 'transport' ? 'Абхаз Авто' : cat2.title
       return {
-        title: isTransport ? `Абхаз Авто: ${sub2.title}` : `${sub2.title}: ${cat2.title} в Абхазии`,
-        description: isTransport
-          ? `Абхаз Авто. ${sub2.title} в Абхазии. Объявления с фото и подробностями.`
-          : `Объявления «${sub2.title}» в категории «${cat2.title}» по всей Абхазии. С фото и подробностями.`,
+        title: `${catTitle} | ${sub2.title}`,
+        description: `Объявления в категории «${cat2.title}», ${sub2.title}.`,
         alternates: { canonical: `${serverUrl}/${cat2.slug}/${sub2.slug}` },
       }
     }
@@ -164,14 +155,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const cat = tax.categories.find((c) => c.slug === segments[1])
     const sub = tax.subcategories.find((s) => s.slug === segments[2])
     if (city && cat && sub) {
-      const isTransport = cat.slug === 'transport'
+      const catTitle = cat.slug === 'transport' ? 'Абхаз Авто' : cat.title
       return {
-        title: isTransport
-          ? `Абхаз Авто: ${sub.title}, ${city.title}`
-          : `${sub.title} в ${city.title}: объявления`,
-        description: isTransport
-          ? `Абхаз Авто. ${sub.title} в ${city.title}. Объявления с фото и подробностями.`
-          : `Объявления «${sub.title}» в ${city.title}. Покупайте и продавайте на Abkhaz Store.`,
+        title: `${city.title} | ${catTitle} | ${sub.title}`,
+        description: `Объявления в категории «${cat.title}», ${sub.title}, ${cityWord(city.title)}.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat.slug}/${sub.slug}` },
       }
     }
@@ -201,8 +188,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     } catch {}
 
     const price = typeof ad.price === 'number' ? `${ad.price.toLocaleString('ru-RU')} ₽` : ''
-    const cityPart = city ? `, ${city.title}` : ', Абхазия'
-    const title = `${clean(ad.title)}${price ? ', ' + price : ''}${cityPart}`
+    const title = `${clean(ad.title)}${price ? ', ' + price : ''}${city ? ', ' + city.title : ''}`
     const description = cut(ad.description)
 
     return {
