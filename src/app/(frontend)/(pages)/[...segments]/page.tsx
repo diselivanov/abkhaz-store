@@ -93,24 +93,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { segments } = await params
   const tax = await loadTaxonomy()
 
+  const clean = (s: string) => (s || '').replace(/\s+/g, ' ').trim()
+
+  const cut = (s: string, n = 160) => {
+    const t = clean(s)
+    if (t.length <= n) return t
+    const slice = t.slice(0, n)
+    const lastSpace = slice.lastIndexOf(' ')
+    return (lastSpace > 80 ? slice.slice(0, lastSpace) : slice) + '…'
+  }
+
   if (segments.length === 1) {
     const city = tax.cities.find((c) => c.slug === segments[0])
     if (city) {
       return {
-        title: `Объявления в городе ${city.title}`,
-        description: `Доска объявлений города ${city.title}.`,
+        title: `Объявления в ${city.title} — купить и продать`,
+        description: `Свежие объявления в ${city.title}: авто, недвижимость, работа, услуги, электроника. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${city.slug}` },
       }
     }
     const cat = tax.categories.find((c) => c.slug === segments[0])
     if (cat) {
+      const isTransport = cat.slug === 'transport'
       return {
-        title: cat.slug === 'transport' ? 'Абхаз авто | Абхазия' : `${cat.title} | Абхазия`,
-        description: `Объявления в категории «${cat.title}» по всей Абхазии.`,
+        title: isTransport
+          ? `Абхаз Авто — купить и продать в Абхазии`
+          : `${cat.title} в Абхазии — объявления`,
+        description: isTransport
+          ? `Абхаз Авто — объявления о продаже машин в Абхазии. Легковые, внедорожники, спецтехника, мото.`
+          : `Объявления в категории «${cat.title}» по всей Абхазии. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${cat.slug}` },
       }
     }
-    return {}
+    return { robots: { index: false, follow: false } }
   }
 
   if (segments.length === 2) {
@@ -118,28 +133,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const city = tax.cities.find((c) => c.slug === a)
     const cat1 = tax.categories.find((c) => c.slug === b)
     if (city && cat1) {
+      const isTransport = cat1.slug === 'transport'
       return {
-        title:
-          cat1.slug === 'transport'
-            ? `Абхаз авто | ${city.title}`
-            : `${city.title} | ${cat1.title}`,
-        description: `Объявления в категории «${cat1.title}» в городе ${city.title}.`,
+        title: isTransport
+          ? `Абхаз Авто — ${city.title}`
+          : `${cat1.title} в ${city.title} — объявления`,
+        description: isTransport
+          ? `Абхаз Авто в ${city.title} — объявления о продаже машин. Легковые, внедорожники, спецтехника, мото.`
+          : `Объявления в категории «${cat1.title}» в ${city.title}. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat1.slug}` },
       }
     }
     const cat2 = tax.categories.find((c) => c.slug === a)
     const sub2 = tax.subcategories.find((s) => s.slug === b)
     if (cat2 && sub2) {
+      const isTransport = cat2.slug === 'transport'
       return {
-        title:
-          cat2.slug === 'transport'
-            ? `Абхаз авто | ${sub2.title} | Абхазия`
-            : `${cat2.title} | ${sub2.title} | Абхазия`,
-        description: `Объявления в категории «${cat2.title}» — ${sub2.title} по всей Абхазии.`,
+        title: isTransport
+          ? `Абхаз Авто — ${sub2.title}`
+          : `${sub2.title} — ${cat2.title} в Абхазии`,
+        description: isTransport
+          ? `Абхаз Авто — ${sub2.title} в Абхазии. Объявления с фото и подробностями.`
+          : `Объявления «${sub2.title}» в категории «${cat2.title}» по всей Абхазии. С фото и подробностями.`,
         alternates: { canonical: `${serverUrl}/${cat2.slug}/${sub2.slug}` },
       }
     }
-    return {}
+    return { robots: { index: false, follow: false } }
   }
 
   if (segments.length === 3) {
@@ -147,16 +166,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const cat = tax.categories.find((c) => c.slug === segments[1])
     const sub = tax.subcategories.find((s) => s.slug === segments[2])
     if (city && cat && sub) {
+      const isTransport = cat.slug === 'transport'
       return {
-        title:
-          cat.slug === 'transport'
-            ? `Абхаз авто | ${sub.title} | ${city.title}`
-            : `${city.title} | ${cat.title} | ${sub.title}`,
-        description: `Объявления в категории «${cat.title}» — ${sub.title} в городе ${city.title}.`,
+        title: isTransport
+          ? `Абхаз Авто — ${sub.title}, ${city.title}`
+          : `${sub.title} в ${city.title} — объявления`,
+        description: isTransport
+          ? `Абхаз Авто — ${sub.title} в ${city.title}. Объявления с фото и подробностями.`
+          : `Объявления «${sub.title}» в ${city.title}. Покупайте и продавайте на Abkhaz Store.`,
         alternates: { canonical: `${serverUrl}/${city.slug}/${cat.slug}/${sub.slug}` },
       }
     }
-    return {}
+    return { robots: { index: false, follow: false } }
   }
 
   if (segments.length === 4) {
@@ -164,14 +185,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const payload = await getPayload({ config })
     const { docs } = await payload.find({
       collection: 'listingAds',
-      where: {
-        and: [{ slug: { equals: segments[3] } }],
-      },
+      where: { and: [{ slug: { equals: segments[3] } }] },
       limit: 1,
       depth: 2,
     })
     const ad = docs[0]
-    if (!ad) return {}
+    if (!ad) return { robots: { index: false, follow: false } }
 
     const adAuthorId = typeof ad.author === 'object' ? ad.author.id : ad.author
     try {
@@ -180,25 +199,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         id: adAuthorId,
         depth: 0,
       })
-      if (authorDoc?.blockedAt) return {}
+      if (authorDoc?.blockedAt) return { robots: { index: false, follow: false } }
     } catch {}
 
-    const title = city ? `${ad.title} | ${city.title}` : `${ad.title} | Абхазия`
+    const price = typeof ad.price === 'number' ? `${ad.price.toLocaleString('ru-RU')} ₽` : ''
+    const cityPart = city ? ` в ${city.title}` : ' в Абхазии'
+    const title = `${clean(ad.title)}${price ? ' — ' + price : ''}${cityPart}`
+    const description = cut(ad.description)
 
     return {
       title,
-      description: ad.description.slice(0, 160),
+      description,
       alternates: { canonical: `${serverUrl}/${segments.join('/')}` },
       openGraph: {
         title,
-        description: ad.description.slice(0, 160),
+        description,
         type: 'website',
         url: `${serverUrl}/${segments.join('/')}`,
       },
+      robots: { index: true, follow: true },
     }
   }
 
-  return {}
+  return { robots: { index: false, follow: false } }
 }
 
 export default async function SegmentsPage({ params, searchParams }: Props) {
